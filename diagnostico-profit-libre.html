@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Diagnóstico PROFIT-LIBRE · Dueños Libres</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --azul: #1E3A5F;
+  --azul-m: #2E6DA4;
+  --azul-l: #D6E8F7;
+  --azul-xl: #EBF4FB;
+  --oro: #8C6300;
+  --oro-l: #FFF8E6;
+  --oro-b: #E8C840;
+  --verde: #1A6B3A;
+  --verde-l: #D4EDDA;
+  --ambar: #B8860B;
+  --ambar-l: #FFF3CD;
+  --rojo: #B22222;
+  --rojo-l: #FAECE7;
+  --text: #1A1A1A;
+  --text-2: #4A4A4A;
+  --text-3: #888;
+  --bg: #F8F5F0;
+  --white: #FFFFFF;
+  --border: rgba(0,0,0,0.09);
+  --border-2: rgba(0,0,0,0.16);
+  --radius: 10px;
+  --radius-lg: 16px;
+  --shadow: 0 2px 14px rgba(0,0,0,0.06);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;font-size:15px;line-height:1.6}
+
+/* HEADER */
+.header{background:var(--azul);padding:1.25rem 2rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;border-bottom:1px solid rgba(255,255,255,0.08)}
+.logo{font-family:'Lora',serif;color:#fff;font-size:1.05rem}
+.logo span{color:#7BBAEC;font-style:italic}
+.step-label{font-size:12px;font-weight:500;color:rgba(255,255,255,0.6);letter-spacing:.06em;text-transform:uppercase}
+
+/* PROGRESS */
+.progress{display:flex;gap:5px;padding:1rem 2rem .5rem;max-width:880px;margin:0 auto}
+.pip{flex:1;height:3px;border-radius:2px;background:var(--border);transition:background .3s}
+.pip.done{background:var(--azul-m)}
+.pip.cur{background:var(--azul)}
+
+/* MAIN */
+.main{max-width:880px;margin:0 auto;padding:1.5rem 2rem 4rem}
+@media(max-width:600px){.main{padding:1rem 1rem 4rem}.header{padding:1rem}.progress{padding:.75rem 1rem .5rem}}
+
+/* STEPS */
+.step{display:none;animation:fadeIn .25s ease}
+.step.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.step-head{margin-bottom:1.25rem}
+.step-title{font-family:'Lora',serif;font-size:1.65rem;color:var(--azul);margin-bottom:.4rem;line-height:1.25}
+.step-sub{font-size:14px;color:var(--text-2);line-height:1.65;max-width:680px}
+
+/* PILLAR BADGES */
+.pilar-badge{display:inline-block;font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;padding:.25rem .7rem;border-radius:100px;margin-bottom:.5rem}
+.pilar-VELOCIDAD{background:rgba(46,109,164,0.15);color:var(--azul-m);border:1px solid rgba(46,109,164,0.3)}
+.pilar-VALOR{background:rgba(140,99,0,0.12);color:var(--oro);border:1px solid rgba(140,99,0,0.3)}
+
+/* INTRO BOX */
+.intro-box{background:var(--azul-xl);border:1px solid var(--azul-l);border-radius:var(--radius-lg);padding:1.25rem 1.4rem;margin-bottom:1.25rem;border-left:3px solid var(--azul-m)}
+.intro-label{font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--azul-m);margin-bottom:.5rem}
+.intro-text{font-size:14px;color:var(--text-2);line-height:1.65}
+.intro-text strong{color:var(--text)}
+
+/* SCALE BOX */
+.scale-box{background:var(--oro-l);border:1px solid #E0C060;border-radius:var(--radius);padding:.9rem 1.1rem;margin-bottom:1.25rem;font-size:13px;color:#5A3D00;line-height:1.5}
+.scale-box strong{display:block;font-family:'Lora',serif;font-size:14px;margin-bottom:.5rem;color:var(--oro)}
+.scale-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:.4rem .8rem}
+.scale-list span{font-size:12px}
+.scale-list b{color:var(--oro);font-weight:600}
+
+/* SUBCAT CARD */
+.subcat{background:var(--white);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.1rem 1.25rem;margin-bottom:.9rem;box-shadow:var(--shadow);border-left:3px solid var(--azul-m)}
+.subcat-name{font-family:'Lora',serif;font-size:1.1rem;color:var(--azul);margin-bottom:.75rem;display:flex;align-items:center;gap:.5rem}
+.subcat-num{width:24px;height:24px;border-radius:50%;background:var(--azul);color:#fff;font-size:11px;font-weight:500;display:flex;align-items:center;justify-content:center;font-family:'DM Sans',sans-serif;flex-shrink:0}
+
+/* QUESTION */
+.q{padding:.7rem 0;border-top:1px solid var(--border)}
+.q:first-of-type{border-top:none;padding-top:.3rem}
+.q-text{font-size:14px;color:var(--text);margin-bottom:.55rem;line-height:1.45}
+.scale-row{display:flex;gap:6px;flex-wrap:wrap}
+.scale-opt{flex:1;min-width:48px;text-align:center;padding:.5rem .25rem;border:1px solid var(--border-2);border-radius:8px;font-size:13px;font-weight:500;cursor:pointer;background:#fff;color:var(--text-2);transition:all .15s;user-select:none;line-height:1.2}
+.scale-opt small{display:block;font-size:9.5px;font-weight:400;color:var(--text-3);margin-top:2px;line-height:1.1}
+.scale-opt:hover{border-color:var(--azul-m);color:var(--azul)}
+.scale-opt.on{background:var(--azul);border-color:var(--azul);color:#fff}
+.scale-opt.on small{color:rgba(255,255,255,.7)}
+
+/* QUALITATIVE */
+.qual-card{background:var(--white);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.1rem 1.25rem;margin-bottom:.9rem;box-shadow:var(--shadow);border-left:3px solid var(--oro)}
+.qual-name{font-family:'Lora',serif;font-style:italic;font-size:1.05rem;color:var(--oro);margin-bottom:.75rem}
+.qual-q{margin:.7rem 0}
+.qual-qtext{font-size:14px;color:var(--text);margin-bottom:.4rem;line-height:1.5}
+.qual-in{width:100%;padding:.6rem .8rem;border:1px solid var(--border-2);border-radius:8px;font-size:14px;font-family:'DM Sans',sans-serif;color:var(--text);background:var(--bg);resize:vertical;min-height:60px;line-height:1.5;transition:border-color .15s}
+.qual-in:focus{outline:none;border-color:var(--azul-m);background:#fff}
+.qual-in::placeholder{color:var(--text-3);font-style:italic}
+
+/* LEVELS */
+.level-card{background:var(--white);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.1rem 1.3rem;margin-bottom:.75rem;box-shadow:var(--shadow);display:flex;gap:1rem;align-items:flex-start;cursor:pointer;transition:all .15s;border-left:4px solid var(--border-2)}
+.level-card:hover{border-color:var(--azul-m)}
+.level-card.is-today{border-left-color:var(--azul-m);background:var(--azul-xl)}
+.level-card.is-goal{border-left-color:var(--oro);background:var(--oro-l)}
+.level-card.is-both{border-left:4px solid var(--oro);background:linear-gradient(90deg,var(--azul-xl) 50%,var(--oro-l) 50%)}
+.level-num{width:42px;height:42px;border-radius:50%;background:var(--azul);color:#fff;font-size:18px;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:'Lora',serif}
+.level-num.verde{background:var(--verde)}
+.level-num.azul{background:var(--azul-m)}
+.level-num.oro{background:var(--oro)}
+.level-num.ambar{background:var(--ambar)}
+.level-num.rojo{background:var(--rojo)}
+.level-body{flex:1}
+.level-name{font-family:'Lora',serif;font-size:1.1rem;color:var(--azul);margin-bottom:.2rem}
+.level-meta{font-size:12px;color:var(--text-3);margin-bottom:.4rem}
+.level-meta strong{color:var(--text-2)}
+.level-desc{font-size:13px;color:var(--text-2);line-height:1.5}
+.level-actions{display:flex;flex-direction:column;gap:.3rem;flex-shrink:0;align-items:flex-end}
+.level-tag{font-size:10.5px;font-weight:600;padding:.15rem .55rem;border-radius:100px;text-transform:uppercase;letter-spacing:.04em;display:none}
+.level-tag.today{display:inline-block;background:var(--azul-m);color:#fff}
+.level-tag.goal{display:inline-block;background:var(--oro);color:#fff}
+.level-pick-row{display:flex;gap:.4rem;margin-bottom:.75rem;flex-wrap:wrap}
+.level-pick-row button{flex:1;min-width:120px;padding:.55rem .8rem;border:1px solid var(--border-2);border-radius:8px;font-size:13px;background:#fff;color:var(--text-2);cursor:pointer;font-family:inherit;transition:.15s}
+.level-pick-row button:hover{border-color:var(--azul-m);color:var(--azul)}
+.level-pick-row .pick-label{display:block;font-size:11px;color:var(--text-3);margin-bottom:.15rem;text-transform:uppercase;letter-spacing:.04em;font-weight:500}
+
+/* DASHBOARD */
+.dash-section{margin-bottom:1.5rem}
+.dash-card{background:var(--white);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.25rem 1.4rem;margin-bottom:.9rem;box-shadow:var(--shadow)}
+.dash-card h3{font-family:'Lora',serif;font-size:1.15rem;color:var(--azul);margin-bottom:.75rem;display:flex;justify-content:space-between;align-items:baseline;gap:1rem}
+.dash-card h3 .small{font-size:14px;color:var(--text-3);font-family:'DM Sans';font-weight:400}
+.score-big{font-family:'Lora',serif;font-size:3rem;color:var(--azul);line-height:1;letter-spacing:-.02em}
+.score-big .of{font-size:1.2rem;color:var(--text-3);font-weight:400}
+.dim-row{display:flex;align-items:center;gap:.75rem;margin:.5rem 0;font-size:14px;flex-wrap:wrap}
+.dim-letter{width:30px;height:30px;border-radius:6px;background:var(--azul);color:#fff;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:'Lora',serif}
+.dim-letter.velocidad{background:var(--azul-m)}
+.dim-letter.valor{background:var(--oro)}
+.dim-name{flex:1;min-width:120px;font-weight:500}
+.dim-bar-wrap{flex:2;min-width:120px;height:14px;background:#EFEAE0;border-radius:7px;overflow:hidden;position:relative}
+.dim-bar{height:100%;background:var(--azul);transition:width .4s}
+.dim-bar.velocidad{background:var(--azul-m)}
+.dim-bar.valor{background:var(--oro)}
+.dim-bar.weak{background:var(--rojo)}
+.dim-bar.med{background:var(--ambar)}
+.dim-bar.strong{background:var(--verde)}
+.dim-score{font-weight:600;color:var(--azul);min-width:48px;text-align:right;font-variant-numeric:tabular-nums}
+.priority-list{margin-top:.5rem}
+.priority-item{padding:.55rem .7rem;border-radius:8px;margin-bottom:.4rem;display:flex;justify-content:space-between;align-items:center;gap:.75rem;font-size:13.5px}
+.priority-item.urgent{background:var(--rojo-l);border-left:3px solid var(--rojo);color:#5A0E0E}
+.priority-item.strong{background:var(--verde-l);border-left:3px solid var(--verde);color:#0D3A1B}
+.priority-meta{font-size:11px;color:var(--text-3);letter-spacing:.04em;text-transform:uppercase}
+.priority-score{font-weight:600;font-variant-numeric:tabular-nums}
+
+/* MESSAGE */
+.pillar-msg{background:var(--azul);color:#fff;border-radius:var(--radius-lg);padding:1.4rem 1.6rem;margin-top:1rem}
+.pillar-msg .label{font-size:11px;color:#7BBAEC;letter-spacing:.06em;text-transform:uppercase;font-weight:500;margin-bottom:.4rem}
+.pillar-msg .line{font-family:'Lora',serif;font-style:italic;font-size:1.05rem;color:#fff;line-height:1.7}
+.pillar-msg .line span{color:var(--oro-b);font-weight:500}
+
+/* ACTIONS */
+.acts{display:flex;gap:10px;flex-wrap:wrap;margin-top:1.25rem;align-items:center}
+.btn{padding:9px 20px;border-radius:var(--radius);font-size:14px;font-family:'DM Sans',sans-serif;cursor:pointer;font-weight:400;transition:all .15s;border:1px solid transparent}
+.btn-sec{background:transparent;border-color:var(--border-2);color:var(--text-2)}
+.btn-sec:hover{background:rgba(0,0,0,0.04);color:var(--text)}
+.btn-pri{background:var(--azul);color:#fff}
+.btn-pri:hover{background:#162C4A}
+.btn-pri:disabled{opacity:.45;cursor:not-allowed}
+.btn-send{width:100%;padding:13px;background:var(--azul);color:#fff;border:none;border-radius:var(--radius);font-size:15px;font-family:'Lora',serif;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:background .15s;margin-top:1rem}
+.btn-send:hover{background:#162C4A}
+.print-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 14px;border:1px solid var(--border-2);border-radius:var(--radius);font-size:13px;color:var(--text-2);cursor:pointer;background:transparent;font-family:'DM Sans',sans-serif;transition:.15s;margin-left:auto}
+.print-btn:hover{background:rgba(0,0,0,0.04)}
+.reset-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 14px;border:1px solid #E5B8B0;border-radius:var(--radius);font-size:13px;color:#A33A24;cursor:pointer;background:transparent;font-family:'DM Sans',sans-serif;transition:.15s}
+.reset-btn:hover{background:#FAECE7}
+
+.div-sec{display:flex;align-items:center;gap:12px;margin:1.5rem 0 1rem;font-size:12px;font-weight:500;letter-spacing:.05em;text-transform:uppercase;color:var(--text-3)}
+.div-sec::before,.div-sec::after{content:'';flex:1;height:1px;background:var(--border)}
+.footer{text-align:center;padding:2rem;font-size:12px;color:var(--text-3)}
+.hint{font-size:12px;color:var(--text-3);margin-top:6px;line-height:1.5}
+
+@media print{
+  .header,.progress,.acts,.print-btn,.reset-btn,.btn-send,.footer,.step:not(.active){display:none!important}
+  .step{display:block!important}
+  body{background:#fff}
+}
+</style>
+</head>
+<body>
+<div class="header">
+  <div class="logo">Dueños <span>Libres</span> · Diagnóstico PROFIT-LIBRE</div>
+  <div class="step-label" id="header-step">Paso 1</div>
+</div>
+<div class="progress" id="progress"></div>
+<div class="main" id="main"></div>
+<div class="footer">Dueños Libres · Método PROFIT-LIBRE · coaching@rolvi.page</div>
+
+<script>
+const DATA = {"dimensions": [{"pilar": "VELOCIDAD", "letter": "P", "name": "Profit & Cash", "prompt": "¿El negocio genera utilidades predecibles y el flujo de caja es visible sin depender del fundador?", "subcats": [{"label": "Rentabilidad Real", "questions": ["Conozco mi margen neto real, no solo el ingreso bruto", "Sé exactamente qué producto o servicio genera más utilidad", "Mis decisiones de precio se basan en margen, no en intuición", "Puedo explicar la rentabilidad del negocio sin revisar nada antes"]}, {"label": "Flujo de Caja", "questions": ["Tengo proyección de flujo de caja a mínimo 90 días", "Las cobranzas ocurren de forma predecible sin que yo las gestione", "Tengo reserva de emergencia equivalente a 2-3 meses de gastos", "El flujo no depende de que yo haga llamadas o gestiones personales"]}, {"label": "Modelo de Ingresos", "questions": ["Tengo ingresos recurrentes o predecibles (no todo proyecto a proyecto)", "Mis precios reflejan el valor que genero, no solo costo más margen", "Tengo más de una fuente de ingreso relevante", "Mi capacidad de ingreso ya no está limitada por mis horas disponibles"]}]}, {"pilar": "VELOCIDAD", "letter": "R", "name": "Revenue & Marketing", "prompt": "¿La empresa genera demanda de forma predecible y sistemática sin depender del fundador?", "subcats": [{"label": "Propuesta de Valor", "questions": ["Mi cliente ideal está claramente definido y documentado", "Tengo un mensaje claro de por qué elegirme a mí y no a otros", "Mi diferenciador es real, específico y difícil de copiar", "Mi equipo comunica la propuesta de valor sin que yo esté presente"]}, {"label": "Generación de Demanda", "questions": ["Tengo un sistema que genera leads sin que yo haga prospección personal", "Mis canales de marketing están activos con resultados medibles", "El pipeline no depende de mi red personal de contactos", "Sé exactamente cuánto cuesta conseguir un cliente nuevo"]}, {"label": "Pipeline y Conversión", "questions": ["Tengo un proceso de ventas documentado que cualquiera puede seguir", "Mi tasa de conversión se mide y se mejora periódicamente", "Tengo casos de éxito documentados que forman parte del proceso de ventas", "El cierre de ventas no requiere de mi participación directa siempre"]}]}, {"pilar": "VELOCIDAD", "letter": "O", "name": "Operaciones", "prompt": "¿Los procesos están documentados y el equipo ejecuta sin supervisión constante cuando el fundador no está?", "subcats": [{"label": "Procesos Documentados", "questions": ["Los procesos críticos de la operación están escritos y accesibles", "Alguien nuevo puede aprender usando la documentación existente", "Los procesos se siguen consistentemente, no solo cuando yo superviso", "Los procesos se actualizan cuando algo cambia o mejora"]}, {"label": "Ejecución sin el Fundador", "questions": ["Mi operación funciona con normalidad si no estoy 2 semanas", "Mi equipo resuelve problemas del día a día sin escalarme todo", "Tengo estándares de calidad que el equipo aplica sin que yo revise", "Los errores se detectan y corrigen internamente sin que yo los descubra"]}, {"label": "Tecnología y Herramientas", "questions": ["Usamos herramientas tecnológicas adecuadas para nuestra etapa", "La información crítica está centralizada, no en correos o chats personales", "Automatizamos tareas repetitivas que antes requerían tiempo humano", "Nuestros sistemas están integrados y el equipo los usa realmente"]}]}, {"pilar": "VALOR", "letter": "F", "name": "Finanzas & KPIs", "prompt": "¿La empresa toma decisiones con datos reales y el equipo interpreta la información sin que el fundador la traduzca?", "subcats": [{"label": "Indicadores Clave", "questions": ["Tengo KPIs definidos para cada área importante del negocio", "Los reviso en una cadencia fija (semanal o mensual) con el equipo", "Mi equipo conoce sus indicadores y entiende qué significan", "Los KPIs están ligados directamente a decisiones y acciones concretas"]}, {"label": "Dashboard de Gestión", "questions": ["Tengo un dashboard que muestra la salud del negocio en minutos", "Los datos son confiables y se actualizan sin esfuerzo manual grande", "El equipo puede leer e interpretar el dashboard sin que yo lo traduzca", "El dashboard me permite detectar problemas antes de que escalen"]}, {"label": "Planeación Financiera", "questions": ["Tengo un presupuesto anual y lo comparo vs. real mensualmente", "Mi área financiera me da información accionable, no solo declaraciones", "Planifico inversiones con criterios claros, no solo por urgencia", "Tomo decisiones estratégicas con datos, no solo con corazonadas"]}]}, {"pilar": "VALOR", "letter": "I", "name": "Innovación & Liderazgo", "prompt": "¿La empresa tiene un diferenciador real y el fundador opera como líder estratégico en lugar de ejecutor cotidiano?", "subcats": [{"label": "Diferenciación Real", "questions": ["Tengo un diferenciador claro que va más allá del precio o el servicio", "Mi cliente lo percibe y puede explicarlo con sus propias palabras", "Es sostenible y difícil de replicar por competidores en el corto plazo", "Construyo activos estratégicos: marca, comunidad, propiedad intelectual"]}, {"label": "Innovación con Método", "questions": ["Mejoramos producto/servicio con base en feedback real de clientes", "Tenemos proceso para probar ideas antes de implementarlas masivamente", "Medimos el resultado de cada iniciativa de mejora o innovación", "La innovación no depende de mis ideas; el equipo también experimenta"]}, {"label": "Liderazgo Estratégico", "questions": ["Dedico tiempo regular a estrategia, no solo a resolver urgencias", "Tengo claridad sobre qué etapa de crecimiento vive el negocio hoy", "Mi rol evolucionó: paso más tiempo construyendo que operando", "Tengo espacio para pensar el negocio con mentores o pares"]}]}, {"pilar": "VALOR", "letter": "T", "name": "Team / Equipo", "prompt": "¿El equipo tiene roles claros, cultura de accountability y las personas crecen sin que el fundador sea árbitro de cada decisión?", "subcats": [{"label": "Estructura y Roles", "questions": ["Todos tienen roles y responsabilidades claras y documentadas", "El organigrama refleja cómo funciona realmente la operación", "No hay trabajo crítico que solo yo pueda hacer en la empresa", "Tengo al menos un líder de segunda línea que puede representarme"]}, {"label": "Cultura y Accountability", "questions": ["Mi equipo vive los valores de la empresa en su comportamiento diario", "Hay cultura de cumplir compromisos sin que yo tenga que recordarlos", "El conflicto entre personas se resuelve internamente sin que yo arbitre", "Los malos resultados se abordan directa y oportunamente, no se toleran"]}, {"label": "Desarrollo de Personas", "questions": ["Tengo un proceso de onboarding que integra gente nueva consistentemente", "Invierto regularmente en capacitación y desarrollo del equipo", "Los buenos se quedan y crecen; la rotación no me afecta dramáticamente", "Los problemas de desempeño se atienden con proceso claro, no se evitan"]}]}], "qualitative": [{"label": "Cómo lideras hoy", "questions": ["¿Qué pasa en tu empresa si te vas 3 semanas sin teléfono? ¿Qué se detiene, quién entra en pánico?", "¿Qué tipos de decisiones no puede tomar tu equipo sin consultarte?", "¿Tienes un segundo al mando que podría dirigir 90 días sin ti? Si no, ¿qué lo impediría?"]}, {"label": "Lo que solo vive en ti", "questions": ["¿Qué conocimiento crítico solo vive en tu cabeza? (procesos, contactos, criterios clave)", "¿Cuántos clientes importantes solo hacen negocios contigo personalmente?"]}, {"label": "Tu bienestar", "questions": ["¿Cuándo fue la última vez que te desconectaste +10 días? ¿Qué pasó con el negocio?", "¿El negocio te da energía o te la quita? ¿Qué parte disfrutas y cuál sientes como carga?"]}, {"label": "El rumbo del equipo", "questions": ["¿Tu equipo puede explicar los valores de la empresa con sus propias palabras? ¿Los vive diariamente o son un póster en la pared?"]}, {"label": "La estructura real", "questions": ["¿El organigrama real y el formal son el mismo? ¿Quién realmente decide, ejecuta, influye?", "¿Qué te da miedo delegar y por qué? (miedo a que lo hagan mal, a perder control, a que alguien sea mejor)"]}], "levels": [{"n": 5, "name": "Arquitecto del Negocio", "desc": "La empresa opera autónomamente. El fundador tiene tiempo para innovar, crear nuevos negocios y crecer estratégicamente. Trabaja sobre el negocio, no dentro de él.", "hrs": "10 – 20 hrs", "profit": "USD 1M+ / año", "estado": "Meta ideal", "color": "verde"}, {"n": 4, "name": "Director Estratégico", "desc": "Gestiona el rendimiento general y trabaja sobre el negocio de forma estratégica, no operativa. Tiene un equipo capaz que ejecuta sin supervisión constante.", "hrs": "20 – 30 hrs", "profit": "USD 500K – 1M", "estado": "Objetivo próximo", "color": "azul"}, {"n": 3, "name": "Constructor de Sistemas", "desc": "Comienza a implementar procesos y capacitar al equipo para que las cosas funcionen sin él al menos en el corto plazo. Etapa de delegación activa.", "hrs": "30 – 40 hrs", "profit": "USD 200K – 500K", "estado": "En transición", "color": "oro"}, {"n": 2, "name": "Gerente Agotado", "desc": "Trata de microgestionar todo porque el equipo no toma decisiones y no está capacitado adecuadamente. Estrés continuo, imposible desconectarse.", "hrs": "40 – 55 hrs", "profit": "USD 100K – 200K", "estado": "Zona de peligro", "color": "ambar"}, {"n": 1, "name": "Bombero Permanente", "desc": "Demasiadas situaciones que atender, apagando fuegos constantemente. No puede gestionar la operación diaria porque está resolviendo crisis todo el tiempo.", "hrs": "+ 55 hrs", "profit": "< USD 100K", "estado": "Zona crítica", "color": "rojo"}]};
+const SCALE_LABELS = ['Inexistente','Muy deficiente','Básico','Bien establecido','Excelente'];
+const PILLAR_LINE = {
+  VELOCIDAD: 'VELOCIDAD para <span>acelerar</span> tu negocio.',
+  VALOR:     'VALOR para <span>mantenerlo firme</span>.'
+};
+
+// Datos de contacto del asesor (mismos valores que src/siteConfig.ts del sitio).
+const CALENDLY_URL = 'https://calendly.com/rolando-villarreal/30min';
+const ADVISOR_EMAIL = 'coaching@rolvi.page';
+
+const STORAGE_KEY = 'dl_diagnostico_profit_libre';
+let state = { scores: {}, qual: {}, today: null, goal: null, lead: { nombre: '', email: '', whatsapp: '' } };
+
+function loadState(){
+  try { const s = localStorage.getItem(STORAGE_KEY); if(s) state = Object.assign(state, JSON.parse(s)); } catch(e) {}
+}
+function saveState(){
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch(e) {}
+}
+
+// Build step list: 1 intro + 6 dimensions + 1 qualitative + 1 levels + 1 dashboard
+const STEPS = [];
+STEPS.push({type:'intro'});
+DATA.dimensions.forEach(d => STEPS.push({type:'dim', dim:d}));
+STEPS.push({type:'qual'});
+STEPS.push({type:'levels'});
+STEPS.push({type:'dashboard'});
+
+let curStep = 0;
+
+function renderProgress(){
+  const wrap = document.getElementById('progress');
+  wrap.innerHTML = STEPS.map((_, i) => `<div class="pip ${i<curStep?'done':i===curStep?'cur':''}"></div>`).join('');
+  document.getElementById('header-step').textContent = `Paso ${curStep+1} de ${STEPS.length}`;
+}
+
+function go(n){
+  if (n < 0 || n >= STEPS.length) return;
+  curStep = n;
+  saveState();
+  render();
+  window.scrollTo({ top:0, behavior:'smooth' });
+}
+
+function questionKey(dimLetter, subIdx, qIdx){ return `${dimLetter}_${subIdx}_${qIdx}`; }
+
+function setScore(dimLetter, subIdx, qIdx, value){
+  const y = window.scrollY;
+  state.scores[questionKey(dimLetter, subIdx, qIdx)] = value;
+  saveState();
+  render();
+  window.scrollTo(0, y);
+}
+
+function setQual(secIdx, qIdx, value){
+  state.qual[`${secIdx}_${qIdx}`] = value;
+  saveState();
+}
+
+function setLead(field, value){
+  state.lead[field] = value;
+  saveState();
+  updateComenzarBtn();
+}
+
+function leadComplete(){
+  const l = state.lead || {};
+  return !!(l.nombre && l.nombre.trim() && l.email && l.email.includes('@') && l.whatsapp && l.whatsapp.trim().length >= 8);
+}
+
+// Habilita/deshabilita el botón "Comenzar" sin re-renderizar el paso
+// (evita que los inputs pierdan el foco mientras la persona escribe).
+function updateComenzarBtn(){
+  const btn = document.getElementById('btn-comenzar');
+  if (btn) btn.disabled = !leadComplete();
+}
+
+function setLevel(field, n){
+  const y = window.scrollY;
+  state[field] = n;
+  saveState();
+  render();
+  window.scrollTo(0, y);
+}
+
+// Render the current step (sin scroll automático — eso lo controlan go() y los handlers)
+function render(){
+  renderProgress();
+  const main = document.getElementById('main');
+  const step = STEPS[curStep];
+  if (step.type === 'intro') main.innerHTML = renderIntro();
+  else if (step.type === 'dim') main.innerHTML = renderDim(step.dim);
+  else if (step.type === 'qual') main.innerHTML = renderQual();
+  else if (step.type === 'levels') main.innerHTML = renderLevels();
+  else if (step.type === 'dashboard') main.innerHTML = renderDashboard();
+}
+
+function renderIntro(){
+  return `
+    <div class="step active">
+      <div class="step-head">
+        <h1 class="step-title">Diagnóstico PROFIT-LIBRE</h1>
+        <p class="step-sub">Una foto honesta de cómo está hoy tu negocio en los 3 pilares: <strong>VISION</strong>, <strong>VELOCIDAD</strong> y <strong>VALOR</strong>. Te va a tomar entre 15 y 20 minutos. No hay respuestas correctas, solo tuyas.</p>
+      </div>
+      <div class="intro-box">
+        <div class="intro-label">Qué vas a contestar</div>
+        <div class="intro-text">
+          <strong>72 preguntas en escala 1 a 5</strong> sobre 6 dimensiones (P · R · O · F · I · T), agrupadas en VELOCIDAD (cómo se mueve tu negocio) y VALOR (cómo lo sostienes).<br><br>
+          <strong>10 reflexiones cualitativas</strong> sobre tu dependencia del negocio (lo que en VISION trabajamos a fondo).<br><br>
+          <strong>5 Niveles del Director:</strong> en cuál estás hoy y a cuál quieres llegar.<br><br>
+          Al final verás un dashboard con tus áreas más fuertes y las que más oportunidad tienen.
+        </div>
+      </div>
+      <div class="scale-box">
+        <strong>Escala de respuesta (1 a 5)</strong>
+        <div class="scale-list">
+          <span><b>1.</b> Inexistente</span>
+          <span><b>2.</b> Muy deficiente</span>
+          <span><b>3.</b> Básico / parcial</span>
+          <span><b>4.</b> Bien establecido</span>
+          <span><b>5.</b> Excelente / sin mí</span>
+        </div>
+      </div>
+      <div class="subcat">
+        <div class="subcat-name"><div class="subcat-num">✓</div>Antes de empezar, ¿cómo te contactamos?</div>
+        <div class="qual-q">
+          <div class="qual-qtext">Nombre</div>
+          <input type="text" class="qual-in" style="min-height:auto" placeholder="Tu nombre completo" value="${escapeHtml(state.lead.nombre)}" oninput="setLead('nombre', this.value)">
+        </div>
+        <div class="qual-q">
+          <div class="qual-qtext">Correo electrónico</div>
+          <input type="email" class="qual-in" style="min-height:auto" placeholder="tu@correo.com" value="${escapeHtml(state.lead.email)}" oninput="setLead('email', this.value)">
+        </div>
+        <div class="qual-q">
+          <div class="qual-qtext">WhatsApp (con lada)</div>
+          <input type="tel" class="qual-in" style="min-height:auto" placeholder="52 1 55 1234 5678" value="${escapeHtml(state.lead.whatsapp)}" oninput="setLead('whatsapp', this.value)">
+        </div>
+        <p class="hint">Usamos estos datos solo para que tu asesor le dé seguimiento a tu diagnóstico. No hacemos spam.</p>
+      </div>
+      <div class="acts">
+        <button class="btn btn-pri" id="btn-comenzar" ${leadComplete() ? '' : 'disabled'} onclick="go(1)">Comenzar →</button>
+      </div>
+      <p class="hint">Tus respuestas se guardan automáticamente en este dispositivo. Puedes cerrar y volver más tarde.</p>
+    </div>
+  `;
+}
+
+function renderDim(dim){
+  let subsHtml = dim.subcats.map((sub, sIdx) => {
+    let qsHtml = sub.questions.map((q, qIdx) => {
+      const sel = state.scores[questionKey(dim.letter, sIdx, qIdx)];
+      const opts = [1,2,3,4,5].map(v =>
+        `<div class="scale-opt ${sel===v?'on':''}" onclick="setScore('${dim.letter}', ${sIdx}, ${qIdx}, ${v})">${v}<small>${SCALE_LABELS[v-1]}</small></div>`
+      ).join('');
+      return `
+        <div class="q">
+          <div class="q-text">${escapeHtml(q)}</div>
+          <div class="scale-row">${opts}</div>
+        </div>
+      `;
+    }).join('');
+    return `
+      <div class="subcat">
+        <div class="subcat-name"><div class="subcat-num">${sIdx+1}</div>${escapeHtml(sub.label)}</div>
+        ${qsHtml}
+      </div>
+    `;
+  }).join('');
+
+  // Compute progress in this dim
+  let answered = 0, total = 0;
+  dim.subcats.forEach((sub, sIdx) => {
+    sub.questions.forEach((_, qIdx) => {
+      total++;
+      if (state.scores[questionKey(dim.letter, sIdx, qIdx)]) answered++;
+    });
+  });
+
+  return `
+    <div class="step active">
+      <div class="step-head">
+        <span class="pilar-badge pilar-${dim.pilar}">Pilar · ${dim.pilar}</span>
+        <h1 class="step-title">${dim.letter} — ${escapeHtml(dim.name)}</h1>
+        <p class="step-sub">${escapeHtml(dim.prompt)}</p>
+        <p class="hint" style="margin-top:.4rem">Respondidas: <strong>${answered}/${total}</strong></p>
+      </div>
+      ${subsHtml}
+      <div class="acts">
+        <button class="btn btn-sec" onclick="go(${curStep-1})">← Volver</button>
+        <button class="btn btn-pri" onclick="go(${curStep+1})">Continuar →</button>
+      </div>
+    </div>
+  `;
+}
+
+function renderQual(){
+  let secsHtml = DATA.qualitative.map((sec, sIdx) => {
+    let qsHtml = sec.questions.map((q, qIdx) => {
+      const val = state.qual[`${sIdx}_${qIdx}`] || '';
+      return `
+        <div class="qual-q">
+          <div class="qual-qtext">${escapeHtml(q)}</div>
+          <textarea class="qual-in" rows="2" placeholder="Tu respuesta..." oninput="setQual(${sIdx}, ${qIdx}, this.value)">${escapeHtml(val)}</textarea>
+        </div>
+      `;
+    }).join('');
+    return `
+      <div class="qual-card">
+        <div class="qual-name">${escapeHtml(sec.label)}</div>
+        ${qsHtml}
+      </div>
+    `;
+  }).join('');
+
+  return `
+    <div class="step active">
+      <div class="step-head">
+        <span class="pilar-badge pilar-VELOCIDAD" style="background:rgba(140,99,0,0.12);color:var(--oro);border-color:rgba(140,99,0,0.3)">Reflexiones de VISION</span>
+        <h1 class="step-title">Tu relación con el negocio</h1>
+        <p class="step-sub">10 preguntas abiertas. No hay puntaje aquí — son las reflexiones que vamos a trabajar a fondo durante el Pilar VISION.</p>
+      </div>
+      ${secsHtml}
+      <div class="acts">
+        <button class="btn btn-sec" onclick="go(${curStep-1})">← Volver</button>
+        <button class="btn btn-pri" onclick="go(${curStep+1})">Continuar →</button>
+      </div>
+    </div>
+  `;
+}
+
+function renderLevels(){
+  const levels = DATA.levels;
+  let cards = levels.map(l => {
+    let cls = 'level-card';
+    if (state.today === l.n && state.goal === l.n) cls += ' is-both';
+    else if (state.today === l.n) cls += ' is-today';
+    else if (state.goal === l.n) cls += ' is-goal';
+    const tagsHtml = `
+      <div class="level-actions">
+        <span class="level-tag today" style="display:${state.today===l.n?'inline-block':'none'}">Hoy</span>
+        <span class="level-tag goal" style="display:${state.goal===l.n?'inline-block':'none'}">Meta</span>
+      </div>
+    `;
+    return `
+      <div class="${cls}">
+        <div class="level-num ${l.color}">${l.n}</div>
+        <div class="level-body">
+          <div class="level-name">${escapeHtml(l.name)}</div>
+          <div class="level-meta"><strong>${escapeHtml(l.hrs)}</strong> · ${escapeHtml(l.profit)} · ${escapeHtml(l.estado)}</div>
+          <div class="level-desc">${escapeHtml(l.desc)}</div>
+        </div>
+        ${tagsHtml}
+      </div>
+    `;
+  }).join('');
+
+  const todayPicks = levels.map(l => `<button onclick="setLevel('today', ${l.n})" style="${state.today===l.n?'background:var(--azul);color:#fff;border-color:var(--azul)':''}">Nivel ${l.n}</button>`).join('');
+  const goalPicks = levels.map(l => `<button onclick="setLevel('goal', ${l.n})" style="${state.goal===l.n?'background:var(--oro);color:#fff;border-color:var(--oro)':''}">Nivel ${l.n}</button>`).join('');
+
+  return `
+    <div class="step active">
+      <div class="step-head">
+        <h1 class="step-title">Los 5 Niveles del Director</h1>
+        <p class="step-sub">Lee los 5 niveles y ubícate. ¿Dónde estás hoy? ¿A dónde quieres llegar? Esta es la dirección del programa.</p>
+      </div>
+      ${cards}
+      <div class="dash-card" style="margin-top:1rem">
+        <span class="pick-label" style="font-size:11px;color:var(--text-3);text-transform:uppercase;letter-spacing:.04em;font-weight:500;margin-bottom:.3rem;display:block">Nivel en el que estás HOY</span>
+        <div class="level-pick-row">${todayPicks}</div>
+        <span class="pick-label" style="font-size:11px;color:var(--text-3);text-transform:uppercase;letter-spacing:.04em;font-weight:500;margin-bottom:.3rem;display:block;margin-top:.5rem">A dónde quieres LLEGAR</span>
+        <div class="level-pick-row">${goalPicks}</div>
+      </div>
+      <div class="acts">
+        <button class="btn btn-sec" onclick="go(${curStep-1})">← Volver</button>
+        <button class="btn btn-pri" onclick="go(${curStep+1})">Ver mi dashboard →</button>
+      </div>
+    </div>
+  `;
+}
+
+function dimScore(dim){
+  const allScores = [];
+  dim.subcats.forEach((sub, sIdx) => {
+    sub.questions.forEach((_, qIdx) => {
+      const s = state.scores[questionKey(dim.letter, sIdx, qIdx)];
+      if (s) allScores.push(s);
+    });
+  });
+  if (!allScores.length) return null;
+  return allScores.reduce((a,b)=>a+b,0) / allScores.length;
+}
+function subcatScore(dim, sIdx){
+  const sub = dim.subcats[sIdx];
+  const scores = sub.questions.map((_, qIdx) => state.scores[questionKey(dim.letter, sIdx, qIdx)]).filter(x => x);
+  if (!scores.length) return null;
+  return scores.reduce((a,b)=>a+b,0) / scores.length;
+}
+function barClass(score){
+  if (score === null) return '';
+  if (score < 2.5) return 'weak';
+  if (score < 3.75) return 'med';
+  return 'strong';
+}
+
+function renderDashboard(){
+  const dims = DATA.dimensions;
+  const dimScores = dims.map(d => ({dim:d, score:dimScore(d)}));
+  const valid = dimScores.filter(x => x.score !== null);
+  const global = valid.length ? valid.reduce((a,b)=>a+b.score,0) / valid.length : null;
+
+  // Por pilar
+  const veloScores = dimScores.filter(x => x.dim.pilar === 'VELOCIDAD' && x.score !== null);
+  const valScores  = dimScores.filter(x => x.dim.pilar === 'VALOR' && x.score !== null);
+  const velo = veloScores.length ? veloScores.reduce((a,b)=>a+b.score,0)/veloScores.length : null;
+  const valor= valScores.length  ? valScores.reduce((a,b)=>a+b.score,0)/valScores.length  : null;
+
+  // Top urgentes y fuertes (subcategorías)
+  const allSubs = [];
+  dims.forEach(d => d.subcats.forEach((s, sIdx) => {
+    const sc = subcatScore(d, sIdx);
+    if (sc !== null) allSubs.push({dim:d, sub:s, score:sc});
+  }));
+  allSubs.sort((a,b)=>a.score-b.score);
+  const urgent = allSubs.slice(0,3);
+  const strong = allSubs.slice(-3).reverse();
+
+  // Por dimensión
+  const dimRows = dimScores.map(x => {
+    const score = x.score;
+    const pct = score !== null ? Math.max(2, score/5*100) : 0;
+    const cls = barClass(score);
+    return `
+      <div class="dim-row">
+        <div class="dim-letter ${x.dim.pilar.toLowerCase()}">${x.dim.letter}</div>
+        <div class="dim-name">${escapeHtml(x.dim.name)} <span style="font-size:11px;color:var(--text-3);font-weight:400">· ${x.dim.pilar}</span></div>
+        <div class="dim-bar-wrap"><div class="dim-bar ${cls}" style="width:${pct}%"></div></div>
+        <div class="dim-score">${score !== null ? score.toFixed(2)+' / 5' : '—'}</div>
+      </div>
+    `;
+  }).join('');
+
+  const urgentList = urgent.map(x => `
+    <div class="priority-item urgent">
+      <div>
+        <div>${escapeHtml(x.sub.label)}</div>
+        <div class="priority-meta">${x.dim.letter} · ${escapeHtml(x.dim.name)}</div>
+      </div>
+      <div class="priority-score">${x.score.toFixed(2)}</div>
+    </div>
+  `).join('');
+  const strongList = strong.map(x => `
+    <div class="priority-item strong">
+      <div>
+        <div>${escapeHtml(x.sub.label)}</div>
+        <div class="priority-meta">${x.dim.letter} · ${escapeHtml(x.dim.name)}</div>
+      </div>
+      <div class="priority-score">${x.score.toFixed(2)}</div>
+    </div>
+  `).join('');
+
+  // Mensaje de nivel sugerido (basado en global)
+  let suggestedLevel = '—', suggestedName = '';
+  if (global !== null) {
+    if (global < 2.0) { suggestedLevel = 1; suggestedName = 'Bombero Permanente'; }
+    else if (global < 3.0) { suggestedLevel = 2; suggestedName = 'Gerente Agotado'; }
+    else if (global < 4.0) { suggestedLevel = 3; suggestedName = 'Constructor de Sistemas'; }
+    else if (global < 4.6) { suggestedLevel = 4; suggestedName = 'Director Estratégico'; }
+    else { suggestedLevel = 5; suggestedName = 'Arquitecto del Negocio'; }
+  }
+
+  const todayMsg = state.today ? `Te ubicaste hoy en <strong>Nivel ${state.today}</strong>` : 'Aún no ubicaste tu nivel actual';
+  const goalMsg  = state.goal  ? `Tu meta es <strong>Nivel ${state.goal}</strong>` : 'Aún no definiste tu nivel meta';
+
+  // Resumen en texto plano para el correo al asesor.
+  const lead = state.lead || { nombre:'', email:'', whatsapp:'' };
+  const summaryLines = [
+    `Resultados del Diagnóstico PROFIT-LIBRE`,
+    ``,
+    `Nombre: ${lead.nombre || '—'}`,
+    `Email: ${lead.email || '—'}`,
+    `WhatsApp: ${lead.whatsapp || '—'}`,
+    ``,
+    `Puntaje global: ${global !== null ? global.toFixed(2) : '—'} / 5.0`,
+    `Nivel sugerido: ${suggestedLevel} — ${suggestedName}`,
+    `Nivel hoy (autoubicación): ${state.today || '—'}`,
+    `Nivel meta: ${state.goal || '—'}`,
+    ``,
+    `Por dimensión:`,
+    ...dimScores.map(x => `  ${x.dim.letter} · ${x.dim.name}: ${x.score !== null ? x.score.toFixed(2) : '—'} / 5`),
+    ``,
+    `3 áreas más urgentes:`,
+    ...urgent.map(x => `  - ${x.sub.label} (${x.dim.letter} · ${x.dim.name}): ${x.score.toFixed(2)}`),
+    ``,
+    `3 fortalezas a apalancar:`,
+    ...strong.map(x => `  - ${x.sub.label} (${x.dim.letter} · ${x.dim.name}): ${x.score.toFixed(2)}`),
+  ];
+  const mailBody = encodeURIComponent(summaryLines.join('\n'));
+  const mailSubject = encodeURIComponent(`Resultados diagnóstico PROFIT-LIBRE — ${lead.nombre || 'sin nombre'}`);
+  const mailtoHref = `mailto:${ADVISOR_EMAIL}?subject=${mailSubject}&body=${mailBody}`;
+
+  return `
+    <div class="step active">
+      <div class="step-head">
+        <h1 class="step-title">Tu diagnóstico PROFIT-LIBRE</h1>
+        <p class="step-sub">Resumen de tus respuestas. Imprime esta página o guárdala en PDF — esta es tu foto al iniciar el cohort.</p>
+      </div>
+
+      <div class="dash-card">
+        <h3>Puntaje global <span class="small">promedio de las 6 dimensiones</span></h3>
+        <div class="score-big">${global !== null ? global.toFixed(2) : '—'}<span class="of"> / 5.0</span></div>
+        <p style="margin-top:.5rem;font-size:13.5px;color:var(--text-2);line-height:1.55">
+          Nivel sugerido por tu puntaje: <strong>Nivel ${suggestedLevel} — ${suggestedName}</strong>.<br>
+          ${todayMsg}. ${goalMsg}.
+        </p>
+      </div>
+
+      <div class="dash-card">
+        <h3>Por dimensión</h3>
+        ${dimRows}
+      </div>
+
+      <div class="dash-card">
+        <h3>Por pilar</h3>
+        <div class="dim-row">
+          <div class="dim-letter velocidad">V</div>
+          <div class="dim-name">VELOCIDAD <span style="font-size:11px;color:var(--text-3);font-weight:400">· P + R + O</span></div>
+          <div class="dim-bar-wrap"><div class="dim-bar velocidad" style="width:${velo!==null?velo/5*100:0}%"></div></div>
+          <div class="dim-score">${velo!==null?velo.toFixed(2)+' / 5':'—'}</div>
+        </div>
+        <div class="dim-row">
+          <div class="dim-letter valor">V</div>
+          <div class="dim-name">VALOR <span style="font-size:11px;color:var(--text-3);font-weight:400">· F + I + T</span></div>
+          <div class="dim-bar-wrap"><div class="dim-bar valor" style="width:${valor!==null?valor/5*100:0}%"></div></div>
+          <div class="dim-score">${valor!==null?valor.toFixed(2)+' / 5':'—'}</div>
+        </div>
+      </div>
+
+      <div class="dash-card">
+        <h3>3 áreas más urgentes</h3>
+        <p class="hint" style="margin-top:-.4rem;margin-bottom:.6rem">Donde más impacto vas a generar en las próximas semanas.</p>
+        <div class="priority-list">${urgentList || '<p style="font-size:13px;color:var(--text-3)">Completa más respuestas para ver tus prioridades.</p>'}</div>
+      </div>
+
+      <div class="dash-card">
+        <h3>3 fortalezas a apalancar</h3>
+        <p class="hint" style="margin-top:-.4rem;margin-bottom:.6rem">Tus bases sólidas. Cuídalas mientras trabajas las urgentes.</p>
+        <div class="priority-list">${strongList || '<p style="font-size:13px;color:var(--text-3)">—</p>'}</div>
+      </div>
+
+      <div class="pillar-msg">
+        <div class="label">Mensaje del programa</div>
+        <div class="line">
+          <span>VISION</span> te dice <span>a dónde</span>.<br>
+          <span>VELOCIDAD</span> para <span>acelerar</span> tu negocio.<br>
+          <span>VALOR</span> te mantiene <span>firme</span>.
+        </div>
+      </div>
+
+      <div class="dash-card" style="border:1.5px solid var(--azul-m)">
+        <h3>Comparte tus resultados con tu asesor</h3>
+        <p class="hint" style="margin-top:-.4rem;margin-bottom:.8rem">
+          Enviamos este resumen a <strong>${escapeHtml(lead.nombre || 'ti')}</strong>
+          (${escapeHtml(lead.email || 'sin correo')}, WhatsApp ${escapeHtml(lead.whatsapp || 'sin número')}).
+          ¿Están mal tus datos? <a href="#" onclick="go(0);return false" style="color:var(--azul-m)">Vuelve al inicio para corregirlos</a>.
+        </p>
+        <button class="btn-send" onclick="window.location.href='${mailtoHref}'">
+          ✉️ Enviar resultados a mi asesor
+        </button>
+        <a class="btn-send" style="text-decoration:none;background:var(--oro);margin-top:.6rem" href="${CALENDLY_URL}" target="_blank" rel="noopener noreferrer">
+          📅 Agendar llamada de retroalimentación
+        </a>
+      </div>
+
+      <div class="acts">
+        <button class="btn btn-sec" onclick="go(${curStep-1})">← Volver</button>
+        <button class="print-btn" onclick="window.print()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+          Imprimir / PDF
+        </button>
+      </div>
+
+      <div class="div-sec" style="margin-top:2rem">¿Vas a usar esta herramienta con otra persona?</div>
+      <div style="text-align:center">
+        <button class="reset-btn" onclick="borrarTodo()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+          Borrar todas las respuestas
+        </button>
+        <p class="hint" style="margin-top:8px">Imprime o guarda PDF antes de borrar.</p>
+      </div>
+    </div>
+  `;
+}
+
+function borrarTodo(){
+  if (!confirm('¿Seguro que quieres borrar todas las respuestas?')) return;
+  try { localStorage.removeItem(STORAGE_KEY); } catch(e) {}
+  state = { scores:{}, qual:{}, today:null, goal:null };
+  curStep = 0;
+  render();
+}
+
+function escapeHtml(str){
+  if (str === null || str === undefined) return '';
+  const div = document.createElement('div');
+  div.textContent = String(str);
+  return div.innerHTML;
+}
+
+loadState();
+render();
+</script>
+</body>
+</html>
