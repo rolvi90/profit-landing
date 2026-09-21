@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Diagnóstico Rápido BOSS · Dueños Libres</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --azul: #1E3A5F;
+  --azul-m: #2E6DA4;
+  --azul-l: #D6E8F7;
+  --azul-xl: #EBF4FB;
+  --oro: #8C6300;
+  --oro-l: #FFF8E6;
+  --oro-b: #E8C840;
+  --verde: #1A6B3A;
+  --verde-l: #D4EDDA;
+  --ambar: #B8860B;
+  --ambar-l: #FFF3CD;
+  --rojo: #B22222;
+  --rojo-l: #FAECE7;
+  --text: #1A1A1A;
+  --text-2: #4A4A4A;
+  --text-3: #888;
+  --bg: #F8F5F0;
+  --white: #FFFFFF;
+  --border: rgba(0,0,0,0.09);
+  --border-2: rgba(0,0,0,0.16);
+  --radius: 10px;
+  --radius-lg: 16px;
+  --shadow: 0 2px 14px rgba(0,0,0,0.06);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;font-size:15px;line-height:1.6}
+
+.header{background:var(--azul);padding:1.25rem 2rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;border-bottom:1px solid rgba(255,255,255,0.08)}
+.logo{font-family:'Lora',serif;color:#fff;font-size:1.05rem}
+.logo span{color:#7BBAEC;font-style:italic}
+.step-label{font-size:12px;font-weight:500;color:rgba(255,255,255,0.6);letter-spacing:.06em;text-transform:uppercase}
+
+.progress{display:flex;gap:5px;padding:1rem 2rem .5rem;max-width:760px;margin:0 auto}
+.pip{flex:1;height:3px;border-radius:2px;background:var(--border);transition:background .3s}
+.pip.done{background:var(--azul-m)}.pip.cur{background:var(--azul)}
+
+.main{max-width:760px;margin:0 auto;padding:1.5rem 2rem 4rem}
+@media(max-width:600px){.main{padding:1rem 1rem 4rem}.header{padding:1rem}.progress{padding:.75rem 1rem .5rem}}
+
+.step{display:none;animation:fadeIn .25s ease}
+.step.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.step-head{margin-bottom:1.25rem;text-align:center}
+.step-title{font-family:'Lora',serif;font-size:1.55rem;color:var(--azul);margin-bottom:.4rem;line-height:1.25;display:flex;align-items:center;justify-content:center;gap:.5rem}
+.step-title .icon{font-size:1.5rem}
+.step-sub{font-size:14px;color:var(--text-2);line-height:1.65;max-width:560px;margin:0 auto}
+
+.intro-hero{text-align:center;padding:1.5rem 0 .5rem}
+.boss-badge{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--oro);background:var(--oro-l);border:1px solid #E0C060;border-radius:100px;padding:.35rem .9rem;margin-bottom:.9rem}
+.intro-hero h1{font-family:'Lora',serif;font-size:2rem;color:var(--azul);line-height:1.2;margin-bottom:.75rem}
+.intro-hero p{font-size:15.5px;color:var(--text-2);max-width:540px;margin:0 auto 1.5rem;line-height:1.65}
+.intro-stats{display:flex;justify-content:center;gap:1.5rem;margin-bottom:1.75rem;flex-wrap:wrap}
+.intro-stat{text-align:center}
+.intro-stat .n{font-family:'Lora',serif;font-size:1.5rem;color:var(--oro);font-weight:600}
+.intro-stat .l{font-size:11.5px;color:var(--text-3);text-transform:uppercase;letter-spacing:.04em}
+
+.scale-legend{display:flex;justify-content:center;gap:.5rem;flex-wrap:wrap;margin:0 auto 1.5rem;max-width:600px}
+.scale-legend .leg{display:flex;flex-direction:column;align-items:center;gap:.25rem;font-size:11px;color:var(--text-2);width:80px}
+.leg-dot{width:26px;height:26px;border-radius:50%}
+
+.intro-box{background:var(--azul-xl);border:1px solid var(--azul-l);border-radius:var(--radius-lg);padding:1.1rem 1.3rem;margin-bottom:1.25rem;border-left:3px solid var(--azul-m);text-align:left}
+.intro-label{font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--azul-m);margin-bottom:.5rem}
+.intro-text{font-size:13.5px;color:var(--text-2);line-height:1.65}
+.intro-text strong{color:var(--text)}
+
+/* QUESTION CARD */
+.qcard{background:var(--white);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.3rem 1.4rem;margin-bottom:1rem;box-shadow:var(--shadow)}
+.qcard .qcat{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--azul-m);margin-bottom:.55rem}
+.qcard .qtext{font-family:'Lora',serif;font-size:1.15rem;color:var(--text);line-height:1.4;margin-bottom:1.1rem}
+.scale-row{display:flex;gap:.5rem;justify-content:space-between}
+.scale-opt{flex:1;display:flex;flex-direction:column;align-items:center;gap:.4rem;cursor:pointer;padding:.4rem .2rem;border-radius:10px;border:2px solid transparent;transition:.12s;background:transparent}
+.scale-opt:hover{background:var(--bg)}
+.scale-opt.sel{border-color:currentColor;background:var(--bg)}
+.scale-dot{width:34px;height:34px;border-radius:50%;flex-shrink:0}
+.scale-opt .slbl{font-size:10.5px;color:var(--text-2);text-align:center;line-height:1.2;font-weight:500}
+@media(max-width:480px){.scale-dot{width:28px;height:28px}.scale-opt .slbl{font-size:9.5px}}
+
+.group-head{display:flex;align-items:center;gap:.6rem;margin-bottom:1rem;padding-bottom:.7rem;border-bottom:2px solid var(--azul-l)}
+.group-head .gicon{font-size:1.6rem}
+.group-head .gname{font-family:'Lora',serif;font-size:1.25rem;color:var(--azul);font-weight:600}
+.group-head .gsub{font-size:12.5px;color:var(--text-3);margin-top:.1rem}
+
+/* RESULTS */
+.score-wrap{background:var(--azul);border-radius:var(--radius-lg);padding:1.75rem 1.5rem;text-align:center;color:#fff;margin-bottom:1rem}
+.score-eyebrow{font-size:11px;color:#7BBAEC;letter-spacing:.06em;text-transform:uppercase;font-weight:600;margin-bottom:.5rem}
+.score-circle-box{position:relative;width:160px;height:160px;margin:0 auto .5rem}
+.score-num{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.score-num .big{font-family:'Lora',serif;font-size:2.6rem;line-height:1;font-weight:700}
+.score-num .of{font-size:11px;color:rgba(255,255,255,.6);letter-spacing:.04em;text-transform:uppercase;margin-top:.2rem}
+.level-badge{display:inline-flex;align-items:center;gap:.5rem;background:rgba(232,200,64,.15);border:1px solid var(--oro-b);border-radius:100px;padding:.4rem .9rem;margin:.5rem 0 .9rem}
+.level-badge .licon{font-size:1.1rem}
+.level-badge .ltxt{font-size:12px;color:var(--oro-b);letter-spacing:.03em;text-transform:uppercase;font-weight:600}
+.level-badge .lname{font-family:'Lora',serif;font-size:1rem;color:#fff;font-weight:600}
+.score-desc{font-size:13.5px;color:rgba(255,255,255,.85);max-width:480px;margin:0 auto;line-height:1.65}
+
+.dash-card{background:var(--white);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.25rem 1.4rem;margin-bottom:.9rem;box-shadow:var(--shadow)}
+.dash-card h3{font-family:'Lora',serif;font-size:1.1rem;color:var(--azul);margin-bottom:.9rem}
+
+.dim-row{display:flex;align-items:center;gap:.75rem;margin:.6rem 0;font-size:14px;flex-wrap:wrap}
+.dim-name{flex:1;min-width:130px;font-weight:500;display:flex;align-items:center;gap:.4rem}
+.dim-bar-wrap{flex:2;min-width:120px;height:14px;background:#EFEAE0;border-radius:7px;overflow:hidden}
+.dim-bar{height:100%;transition:width .4s}
+.dim-bar.weak{background:var(--rojo)}.dim-bar.med{background:var(--ambar)}.dim-bar.strong{background:var(--verde)}
+.dim-score{font-weight:600;color:var(--azul);min-width:44px;text-align:right;font-variant-numeric:tabular-nums;font-size:13px}
+
+.outcomes-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.6rem}
+@media(max-width:560px){.outcomes-grid{grid-template-columns:1fr}}
+.outcome-cell{border-radius:10px;padding:.8rem .7rem;text-align:center;background:var(--bg)}
+.outcome-cell .oicon{font-size:1.3rem;margin-bottom:.3rem}
+.outcome-cell .olbl{font-size:11px;color:var(--text-3);text-transform:uppercase;letter-spacing:.04em;font-weight:600;margin-bottom:.35rem}
+.outcome-cell .oval{font-size:12.5px;font-weight:700;padding:.2rem .5rem;border-radius:100px;display:inline-block}
+
+.priority-card{border-radius:var(--radius-lg);padding:1.3rem 1.4rem;margin-bottom:.85rem;color:#fff;background:linear-gradient(160deg,#C0392B,#4A0E0E);position:relative;overflow:hidden}
+.priority-card .pnum{position:absolute;top:.9rem;right:1.1rem;font-family:'Lora',serif;font-size:2.3rem;font-weight:700;color:rgba(255,255,255,.18)}
+.priority-card .pbadge{display:inline-block;font-size:10.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;background:rgba(255,255,255,.18);padding:.25rem .6rem;border-radius:100px;margin-bottom:.6rem}
+.priority-card .pname{font-family:'Lora',serif;font-size:1.25rem;font-weight:600;margin-bottom:.5rem}
+.priority-card .pdesc{font-size:13px;color:rgba(255,255,255,.85);line-height:1.55;margin-bottom:.8rem;max-width:80%}
+.priority-card .pareas-lbl{font-size:10.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:rgba(255,255,255,.6);margin-bottom:.4rem}
+.priority-card .pareas{font-size:13px;color:#fff;line-height:1.8}
+
+.insight-box{background:var(--azul);color:#fff;border-radius:var(--radius-lg);padding:1.25rem 1.4rem;margin-top:1rem;text-align:center}
+.insight-box .label{font-size:11px;color:#7BBAEC;letter-spacing:.06em;text-transform:uppercase;font-weight:500;margin-bottom:.5rem}
+.insight-box .line{font-size:14px;color:#fff;line-height:1.6;margin-bottom:1rem}
+.cta-btn{display:inline-block;background:var(--oro-b);color:var(--azul);font-weight:700;font-size:14.5px;padding:.7rem 1.6rem;border-radius:100px;text-decoration:none}
+.cta-sub{font-size:12px;color:rgba(255,255,255,.6);margin-top:.6rem}
+
+/* TABLA RESUMEN DE RESPUESTAS */
+.ans-table{border:1px solid var(--border);border-radius:12px;overflow:hidden}
+.ans-head,.ans-row{display:grid;grid-template-columns:44px 150px 1fr 140px;gap:.75rem;padding:.75rem 1rem;align-items:start}
+.ans-head{background:var(--bg);font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--text-3)}
+.ans-row{border-top:1px solid var(--border);font-size:13.5px}
+.ans-n{color:var(--text-3);font-size:12.5px;font-variant-numeric:tabular-nums}
+.ans-area{font-weight:600;color:var(--text)}
+.ans-q{color:var(--text-2);line-height:1.5}
+.ans-a{display:flex;align-items:center;gap:.45rem;font-weight:600;color:var(--text);white-space:nowrap}
+.ans-dot{width:12px;height:12px;border-radius:50%;flex-shrink:0}
+@media(max-width:640px){
+  .ans-head{display:none}
+  .ans-row{grid-template-columns:34px 1fr;grid-template-areas:"n area" "n q" "n a";gap:.2rem .6rem}
+  .ans-n{grid-area:n}.ans-area{grid-area:area}.ans-q{grid-area:q}.ans-a{grid-area:a;margin-top:.2rem}
+}
+
+/* TARJETAS DE PILARES */
+.pillar-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:.7rem}
+@media(max-width:560px){.pillar-grid{grid-template-columns:1fr}}
+.pillar-card{background:var(--bg);border:1px solid var(--border);border-radius:12px;padding:.9rem 1rem}
+.pc-top{display:flex;justify-content:space-between;align-items:baseline;gap:.5rem;margin-bottom:.6rem;font-size:14px}
+.pc-name{font-weight:500;color:var(--text)}
+.pc-pct{font-weight:700;font-variant-numeric:tabular-nums}
+.pc-bar{height:10px;background:#E4DFD3;border-radius:6px;overflow:hidden}
+.pc-bar div{height:100%;border-radius:6px;transition:width .4s}
+
+/* LEAD CAPTURE + COMPARTIR RESULTADOS */
+.lead-card{background:var(--white);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.2rem 1.4rem;margin-bottom:1.25rem;box-shadow:var(--shadow);border-left:3px solid var(--oro-b);text-align:left}
+.lead-card .lead-title{font-family:'Lora',serif;font-size:1.1rem;color:var(--azul);margin-bottom:.8rem}
+.lead-field{margin:.65rem 0}
+.lead-field label{display:block;font-size:13px;color:var(--text);margin-bottom:.3rem;font-weight:500}
+.lead-in{width:100%;padding:.6rem .8rem;border:1px solid var(--border-2);border-radius:8px;font-size:14px;font-family:'DM Sans',sans-serif;color:var(--text);background:var(--bg);transition:border-color .15s}
+.lead-in:focus{outline:none;border-color:var(--azul-m);background:#fff}
+.share-card{background:var(--white);border:1.5px solid var(--azul-m);border-radius:var(--radius-lg);padding:1.25rem 1.4rem;margin-top:1rem;box-shadow:var(--shadow);text-align:center}
+.share-card h3{font-family:'Lora',serif;font-size:1.1rem;color:var(--azul);margin-bottom:.5rem}
+.share-card .share-who{font-size:12.5px;color:var(--text-3);line-height:1.55;margin-bottom:.9rem}
+.share-card .share-who a{color:var(--azul-m)}
+.share-btns{display:flex;gap:.6rem;flex-wrap:wrap;justify-content:center}
+.share-btn{flex:1;min-width:200px;display:inline-flex;align-items:center;justify-content:center;gap:.5rem;padding:.75rem 1rem;border-radius:var(--radius);border:none;font-family:'DM Sans',sans-serif;font-size:14.5px;font-weight:600;cursor:pointer;text-decoration:none;color:#fff;background:var(--azul)}
+.share-btn:hover{background:#162C4A}
+.share-btn.wa{background:#1A7F4B}
+.share-btn.wa:hover{background:#146a3e}
+
+.acts{display:flex;gap:10px;flex-wrap:wrap;margin-top:1.25rem;align-items:center;justify-content:center}
+.btn{padding:9px 20px;border-radius:var(--radius);font-size:14px;font-family:'DM Sans',sans-serif;cursor:pointer;font-weight:400;transition:all .15s;border:1px solid transparent}
+.btn-sec{background:transparent;border-color:var(--border-2);color:var(--text-2)}
+.btn-sec:hover{background:rgba(0,0,0,0.04);color:var(--text)}
+.btn-pri{background:var(--azul);color:#fff}
+.btn-pri:hover{background:#162C4A}
+.btn-pri:disabled{opacity:.4;cursor:not-allowed}
+.print-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 14px;border:1px solid var(--border-2);border-radius:var(--radius);font-size:13px;color:var(--text-2);cursor:pointer;background:transparent;font-family:'DM Sans',sans-serif;transition:.15s}
+.print-btn:hover{background:rgba(0,0,0,0.04)}
+.reset-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 14px;border:1px solid #E5B8B0;border-radius:var(--radius);font-size:13px;color:#A33A24;cursor:pointer;background:transparent;font-family:'DM Sans',sans-serif;transition:.15s}
+.reset-btn:hover{background:#FAECE7}
+
+.div-sec{display:flex;align-items:center;gap:12px;margin:1.5rem 0 1rem;font-size:12px;font-weight:500;letter-spacing:.05em;text-transform:uppercase;color:var(--text-3)}
+.div-sec::before,.div-sec::after{content:'';flex:1;height:1px;background:var(--border)}
+.footer{text-align:center;padding:2rem;font-size:12px;color:var(--text-3)}
+.hint{font-size:12px;color:var(--text-3);margin-top:6px;line-height:1.5;text-align:center}
+
+@media print{
+  .header,.progress,.acts,.print-btn,.reset-btn,.footer,.share-card,.step:not(.active){display:none!important}
+  .step{display:block!important}
+  body{background:#fff}
+  .dash-card,.priority-card,.ans-row,.pillar-card{break-inside:avoid;page-break-inside:avoid}
+  .score-wrap,.dim-bar,.pc-bar div,.ans-dot,.priority-card{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+}
+</style>
+</head>
+<body>
+<div class="header">
+  <div class="logo">Dueños <span>Libres</span> · Diagnóstico Rápido BOSS</div>
+  <div class="step-label" id="header-step">Paso 1</div>
+</div>
+<div class="progress" id="progress"></div>
+<div class="main" id="main"></div>
+<div class="footer">Dueños Libres · Método PROFIT-LIBRE · coaching@rolvi.page</div>
+<iframe name="hidden_gform_iframe" style="display:none" title="envío de lead a Google Form"></iframe>
+
+<script>
+const SCALE = [
+  {v:0, key:'ni', lbl:'Ni Preguntes', color:'var(--rojo)'},
+  {v:1, key:'falta', lbl:'Falta Trabajo', color:'var(--ambar)'},
+  {v:2, key:'va', lbl:'Va Bien', color:'var(--oro)'},
+  {v:3, key:'muy', lbl:'Muy Bien', color:'var(--verde)'},
+  {v:4, key:'ideal', lbl:'100% Ideal', color:'var(--azul-m)'},
+];
+
+// Las 10 categorías (mismas de la Matriz de Crecimiento) agrupadas en los 4 pilares
+const CATEGORIES = [
+  {id:'owner', pillar:'owner', cat:'DESEMPEÑO DEL DUEÑO', q:'¿Tienes un sistema diario claro para decidir en qué trabajar, en vez de solo reaccionar a lo que se atraviesa?',
+    desc:'Si tú no tienes un sistema claro de prioridades, tu negocio tampoco lo tiene — todo termina pasando por tu bandeja de entrada y tu ánimo del día.',
+    areas:['Rutinas diarias','Manejo del tiempo','Prioridades','Energía y enfoque']},
+  {id:'vision1', pillar:'vision', cat:'VISIÓN ALINEADA', q:'¿Tu equipo sabe exactamente hacia dónde va el negocio y cuál es su rol para llegar ahí?',
+    desc:'Cuando la visión no está alineada, el equipo jala en direcciones distintas y el esfuerzo no se acumula.',
+    areas:['Propósito','Metas','Visión','Intención estratégica','Misión']},
+  {id:'vision2', pillar:'vision', cat:'ESTRATEGIA DEFINIDA', q:'¿Tienes un plan escrito para los próximos 12 meses que te diga en qué enfocarte y qué rechazar?',
+    desc:'Sin un plan escrito, cada semana reinventas las prioridades — y terminas diciendo que sí a todo.',
+    areas:['Plan a 12 meses','Enfoque','Prioridades estratégicas','Qué decir que no']},
+  {id:'vision3', pillar:'vision', cat:'PLANEACIÓN DISCIPLINADA', q:'¿Operas tu negocio con un plan claro a 90 días, con hitos específicos que revisas regularmente?',
+    desc:'Un plan anual sin checkpoints trimestrales se queda en la gaveta. Los 90 días son el ritmo que sí se sostiene.',
+    areas:['Plan a 90 días','Hitos','Revisión regular','Ejecución']},
+  {id:'vel1', pillar:'velocidad', cat:'PROFIT & CASH', q:'¿Conoces tu margen de utilidad, tu posición de caja, y si tendrás suficiente flujo en los próximos 90 días?',
+    desc:'No puedes dirigir lo que no mides. El flujo de caja es el oxígeno del negocio — y muchos dueños vuelan a ciegas.',
+    areas:['Margen de utilidad','Flujo de caja','Proyección a 90 días','Estructura de costos']},
+  {id:'vel2', pillar:'velocidad', cat:'REVENUE & MARKETING', q:'¿Tienes un sistema confiable y repetible para conseguir y convertir nuevos leads, clientes o compradores?',
+    desc:'Si las ventas dependen de tu esfuerzo personal cada mes, no tienes un sistema — tienes una dependencia.',
+    areas:['Generación de leads','Conversión','Marketing','Proceso de ventas']},
+  {id:'vel3', pillar:'velocidad', cat:'OPERACIONES & PRODUCTO', q:'¿Tu negocio podría operar dos semanas sin ti, o todo se detiene cuando te alejas?',
+    desc:'Si el negocio se detiene cuando tú te vas, no tienes una empresa — tienes un empleo muy exigente.',
+    areas:['Procesos documentados','Delegación','Calidad del producto o servicio','Continuidad operativa']},
+  {id:'val1', pillar:'valor', cat:'FINANZAS & KPIS', q:'¿Revisas cada semana un set simple de números que te digan con claridad si el negocio va bien o mal?',
+    desc:'Sin números semanales claros, decides con el estómago, no con datos — y te enteras del problema demasiado tarde.',
+    areas:['Dashboard semanal','KPIs clave','Reportes financieros','Seguimiento de metas']},
+  {id:'val2', pillar:'valor', cat:'INNOVACIÓN & GESTIÓN', q:'¿Estás mejorando activamente cómo opera tu negocio, o sigues haciendo la mayoría de las cosas igual que siempre?',
+    desc:'Si el negocio no mejora cómo funciona, el margen y la capacidad se los comen los viejos hábitos.',
+    areas:['Procesos','Sistemas','Gestión','IA y automatización','Optimización']},
+  {id:'val3', pillar:'valor', cat:'EQUIPO & LIDERAZGO', q:'¿Tienes a la gente correcta en los roles correctos, con responsabilidades claras, de modo que tú no seas el cuello de botella?',
+    desc:'Un equipo débil o mal diseñado te mantiene como el cuello de botella, y el negocio no puede crecer más allá de ti.',
+    areas:['Desempeño del equipo','Reclutamiento','Desarrollo de líderes','Cultura organizacional']},
+];
+
+const OUTCOMES = [
+  {id:'out_dinero', icon:'💰', lbl:'Dinero', q:'¿Tu negocio te está dando la utilidad e ingreso que quieres?'},
+  {id:'out_tiempo', icon:'⏱️', lbl:'Tiempo', q:'¿Tu negocio te está dando la libertad de tiempo que quieres?'},
+  {id:'out_equipo', icon:'🤝', lbl:'Equipo', q:'¿Tienes el equipo que tu negocio necesita para operar sin depender de ti?'},
+];
+
+const PILLARS = [
+  {key:'owner', icon:'🧠', name:'Desempeño del Dueño', color:'#4A6274'},
+  {key:'vision', icon:'🧭', name:'VISION', color:'var(--azul)'},
+  {key:'velocidad', icon:'⚡', name:'VELOCIDAD', color:'var(--azul-m)'},
+  {key:'valor', icon:'💎', name:'VALOR', color:'var(--oro)'},
+];
+
+const LEVELS = [
+  {n:1, key:'bombero', icon:'🔥', name:'Bombero Permanente', min:0, max:20,
+    desc:'Vives apagando incendios. Casi todo pasa por ti, y el negocio se siente errático e impredecible. El primer paso no es un sistema complejo — es recuperar 2-3 horas a la semana para pensar en vez de solo reaccionar.'},
+  {n:2, key:'gerente', icon:'😩', name:'Gerente Agotado', min:21, max:40,
+    desc:'Ya tienes cierto orden, pero lo sostienes a puro esfuerzo personal. Trabajas más horas de las que deberías y delegar todavía se siente arriesgado. Tu prioridad es construir los primeros sistemas que no dependan de tu presencia constante.'},
+  {n:3, key:'constructor', icon:'🧱', name:'Constructor de Sistemas', min:41, max:60,
+    desc:'Los sistemas ya están empezando a funcionar y tienes claridad real en varias áreas, pero sigues siendo el cuello de botella. Los procesos existen, pero falta consistencia. Estás pasando de hacer el trabajo a construir la máquina — la transición no está completa.'},
+  {n:4, key:'director', icon:'🧭', name:'Director Estratégico', min:61, max:80,
+    desc:'El negocio ya opera con cierta independencia. Tu enfoque ahora es menos operativo y más estratégico: sucesión, cultura e institucionalización de lo que ya funciona.'},
+  {n:5, key:'arquitecto', icon:'🏛️', name:'Arquitecto del Negocio', min:81, max:100,
+    desc:'Tienes pocas brechas operativas. Tu trabajo hoy es estratégico: visión, sucesión y multiplicación del negocio que construiste.'},
+];
+
+const GROUPS = [
+  {key:'owner', icon:'🧠', name:'Desempeño del Dueño', sub:'1 pregunta', items:CATEGORIES.filter(c=>c.pillar==='owner')},
+  {key:'vision', icon:'🧭', name:'VISION', sub:'3 preguntas', items:CATEGORIES.filter(c=>c.pillar==='vision')},
+  {key:'velocidad', icon:'⚡', name:'VELOCIDAD', sub:'3 preguntas', items:CATEGORIES.filter(c=>c.pillar==='velocidad')},
+  {key:'valor', icon:'💎', name:'VALOR', sub:'3 preguntas', items:CATEGORIES.filter(c=>c.pillar==='valor')},
+  {key:'outcomes', icon:'🎯', name:'Resultados que estás obteniendo', sub:'3 preguntas', items:OUTCOMES},
+];
+
+const STORAGE_KEY = 'dl_diagnostico_rapido';
+
+// Contacto del asesor (mismos valores que src/siteConfig.ts del sitio).
+const CALENDLY = 'https://calendly.com/rolando-villarreal/30min';
+const ADVISOR_EMAIL = 'coaching@rolvi.page';
+const ADVISOR_WHATSAPP = '528661234006';
+
+// Google Form ligado a un Sheet: guarda nombre/email/whatsapp de cada interesado apenas
+// pulsa "Comenzar" (aunque no termine). Se envía por un iframe oculto para que la
+// persona nunca salga de esta página.
+const GFORM_ACTION = 'https://docs.google.com/forms/d/e/1FAIpQLSfpi8xUgDkruOKLUhaE3ESpD_MGktfYOw9R_ykb3A26zKMjZA/formResponse';
+const GFORM_ENTRIES = { nombre: 'entry.1929709800', email: 'entry.1533618188', whatsapp: 'entry.945493825' };
+let lastSubmittedLead = null;
+
+const EMPTY_LEAD = () => ({ nombre: '', email: '', whatsapp: '' });
+let state = { answers: {}, lead: EMPTY_LEAD() };
+
+function loadState(){
+  try { const s = localStorage.getItem(STORAGE_KEY); if (s) state = Object.assign(state, JSON.parse(s)); } catch(e) {}
+  state.lead = Object.assign(EMPTY_LEAD(), state.lead || {});
+}
+function saveState(){
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch(e) {}
+}
+
+function setLead(field, value){
+  state.lead[field] = value;
+  saveState();
+  updateComenzarBtn();
+}
+function leadComplete(){
+  const l = state.lead;
+  return !!(l.nombre.trim() && l.email.includes('@') && l.whatsapp.trim().length >= 8);
+}
+// Habilita/deshabilita "Comenzar" sin re-renderizar el paso (así los inputs no pierden el foco).
+function updateComenzarBtn(){
+  const btn = document.getElementById('btn-comenzar');
+  if (btn) btn.disabled = !leadComplete();
+}
+
+function submitToGoogleForm(){
+  if (!leadComplete()) return;
+  const snapshot = JSON.stringify(state.lead);
+  if (snapshot === lastSubmittedLead) return;
+  lastSubmittedLead = snapshot;
+  const form = document.createElement('form');
+  form.action = GFORM_ACTION;
+  form.method = 'POST';
+  form.target = 'hidden_gform_iframe';
+  form.style.display = 'none';
+  Object.keys(GFORM_ENTRIES).forEach(key => {
+    const input = document.createElement('input');
+    input.type = 'hidden';
+    input.name = GFORM_ENTRIES[key];
+    input.value = state.lead[key] || '';
+    form.appendChild(input);
+  });
+  document.body.appendChild(form);
+  form.submit();
+  setTimeout(() => form.remove(), 1000);
+}
+
+const STEPS = [{type:'intro'}];
+GROUPS.forEach(g => STEPS.push({type:'group', group:g}));
+STEPS.push({type:'dashboard'});
+
+let curStep = 0;
+
+function renderProgress(){
+  const wrap = document.getElementById('progress');
+  wrap.innerHTML = STEPS.map((_, i) => `<div class="pip ${i<curStep?'done':i===curStep?'cur':''}"></div>`).join('');
+  document.getElementById('header-step').textContent = `Paso ${curStep+1} de ${STEPS.length}`;
+}
+function go(n){
+  if (n < 0 || n >= STEPS.length) return;
+  curStep = n;
+  saveState();
+  render();
+  window.scrollTo({ top:0, behavior:'smooth' });
+}
+function setAnswer(id, val){
+  state.answers[id] = val;
+  saveState();
+  const step = STEPS[curStep];
+  if (step.type === 'group') renderGroupBody(step.group);
+}
+
+function render(){
+  renderProgress();
+  const main = document.getElementById('main');
+  const step = STEPS[curStep];
+  if (step.type === 'intro') main.innerHTML = renderIntro();
+  else if (step.type === 'group') main.innerHTML = renderGroup(step.group);
+  else if (step.type === 'dashboard') main.innerHTML = renderDashboard();
+}
+
+function escapeHtml(str){
+  if (str === null || str === undefined) return '';
+  const div = document.createElement('div');
+  div.textContent = String(str);
+  return div.innerHTML;
+}
+
+function renderIntro(){
+  const legend = SCALE.map(s => `
+    <div class="leg"><div class="leg-dot" style="background:${s.color}"></div>${escapeHtml(s.lbl)}</div>
+  `).join('');
+  return `
+    <div class="step active">
+      <div class="intro-hero">
+        <div class="boss-badge">BOSS SCORE · Business Operating System Score</div>
+        <h1>¿Tu negocio te está dando lo que buscabas?</h1>
+        <p>13 preguntas · 5 minutos · tu puntaje sobre 100. Toca la opción que más se parece a tu realidad — sin pensarlo demasiado.</p>
+        <div class="intro-stats">
+          <div class="intro-stat"><div class="n">13</div><div class="l">Preguntas</div></div>
+          <div class="intro-stat"><div class="n">~5</div><div class="l">Minutos</div></div>
+          <div class="intro-stat"><div class="n">/100</div><div class="l">Tu puntaje</div></div>
+        </div>
+        <div class="scale-legend">${legend}</div>
+      </div>
+      <div class="intro-box">
+        <div class="intro-label">Cómo funciona</div>
+        <div class="intro-text">
+          Vas a calificar <strong>10 áreas de tu negocio</strong> (las mismas que usamos en el Método PROFIT-LIBRE) y 3 preguntas sobre los <strong>resultados</strong> que estás obteniendo hoy: dinero, tiempo y equipo.<br><br>
+          Al final vas a ver tu puntaje, tu nivel como dueño, y tus 3 áreas prioritarias para trabajar primero.
+        </div>
+      </div>
+      <div class="lead-card">
+        <div class="lead-title">Antes de empezar, ¿cómo te contactamos?</div>
+        <div class="lead-field">
+          <label for="lead-nombre">Nombre</label>
+          <input id="lead-nombre" type="text" class="lead-in" autocomplete="name" placeholder="Tu nombre completo" value="${escapeHtml(state.lead.nombre)}" oninput="setLead('nombre', this.value)">
+        </div>
+        <div class="lead-field">
+          <label for="lead-email">Correo electrónico</label>
+          <input id="lead-email" type="email" class="lead-in" autocomplete="email" placeholder="tu@correo.com" value="${escapeHtml(state.lead.email)}" oninput="setLead('email', this.value)">
+        </div>
+        <div class="lead-field">
+          <label for="lead-whatsapp">WhatsApp (con lada)</label>
+          <input id="lead-whatsapp" type="tel" class="lead-in" autocomplete="tel" placeholder="52 1 55 1234 5678" value="${escapeHtml(state.lead.whatsapp)}" oninput="setLead('whatsapp', this.value)">
+        </div>
+        <p class="hint" style="text-align:left">Usamos estos datos solo para que tu asesor le dé seguimiento a tu diagnóstico. No hacemos spam.</p>
+      </div>
+      <div class="acts">
+        <button class="btn btn-pri" id="btn-comenzar" ${leadComplete() ? '' : 'disabled'} onclick="submitToGoogleForm(); go(1)">Comenzar →</button>
+      </div>
+    </div>
+  `;
+}
+
+function scaleRowHtml(id){
+  const sel = state.answers[id];
+  return `
+    <div class="scale-row">
+      ${SCALE.map(s => `
+        <div class="scale-opt ${sel===s.v?'sel':''}" style="color:${s.color}" onclick="setAnswer('${id}', ${s.v})">
+          <div class="scale-dot" style="background:${s.color}"></div>
+          <div class="slbl">${escapeHtml(s.lbl)}</div>
+        </div>
+      `).join('')}
+    </div>
+  `;
+}
+
+function renderGroup(g){
+  return `
+    <div class="step active">
+      <div class="group-head">
+        <span class="gicon">${g.icon}</span>
+        <div>
+          <div class="gname">${escapeHtml(g.name)}</div>
+          <div class="gsub">${escapeHtml(g.sub)}</div>
+        </div>
+      </div>
+      <div id="group-body">${groupBodyHtml(g)}</div>
+      <div class="acts">
+        <button class="btn btn-sec" onclick="go(${curStep-1})">← Volver</button>
+        <button class="btn btn-pri" id="group-next" onclick="go(${curStep+1})">${curStep === STEPS.length-2 ? 'Ver mi resultado →' : 'Siguiente →'}</button>
+      </div>
+    </div>
+  `;
+}
+function groupBodyHtml(g){
+  return g.items.map(it => `
+    <div class="qcard">
+      <div class="qcat">${escapeHtml(it.cat || it.lbl)}</div>
+      <div class="qtext">${escapeHtml(it.q)}</div>
+      ${scaleRowHtml(it.id)}
+    </div>
+  `).join('');
+}
+function renderGroupBody(g){
+  const el = document.getElementById('group-body');
+  if (el) el.innerHTML = groupBodyHtml(g);
+}
+
+// ===== CÁLCULO =====
+function pillarScore(pillarKey){
+  const items = CATEGORIES.filter(c => c.pillar === pillarKey);
+  const answered = items.filter(it => state.answers[it.id] !== undefined);
+  if (!answered.length) return null;
+  const sum = answered.reduce((a, it) => a + state.answers[it.id], 0);
+  return Math.round((sum / (answered.length * 4)) * 100);
+}
+function totalScore(){
+  const answered = CATEGORIES.filter(c => state.answers[c.id] !== undefined);
+  if (!answered.length) return null;
+  const sum = answered.reduce((a, c) => a + state.answers[c.id], 0);
+  return Math.round((sum / (answered.length * 4)) * 100);
+}
+function answeredCount(){
+  const allIds = [...CATEGORIES.map(c=>c.id), ...OUTCOMES.map(o=>o.id)];
+  return allIds.filter(id => state.answers[id] !== undefined).length;
+}
+function levelFor(score){
+  return LEVELS.find(l => score >= l.min && score <= l.max) || LEVELS[0];
+}
+// "DESEMPEÑO DEL DUEÑO" → "Desempeño del Dueño", "FINANZAS & KPIS" → "Finanzas & KPIs"
+function prettyCat(str){
+  const small = ['de', 'del', 'la', 'el', 'y', '&'];
+  return str.toLowerCase().split(' ')
+    .map((w, i) => (i > 0 && small.includes(w)) ? w : w.charAt(0).toUpperCase() + w.slice(1))
+    .join(' ')
+    .replace('Kpis', 'KPIs');
+}
+function scaleColorFor(val){
+  const s = SCALE.find(s => s.v === val);
+  return s ? s.color : 'var(--text-3)';
+}
+
+function renderDashboard(){
+  const total = totalScore();
+  const answered = answeredCount();
+  const totalQs = CATEGORIES.length + OUTCOMES.length;
+
+  if (total === null) {
+    return `
+      <div class="step active">
+        <div class="step-head">
+          <h1 class="step-title">Aún no hay respuestas</h1>
+          <p class="step-sub">Vuelve al inicio y responde las 13 preguntas para ver tu resultado.</p>
+        </div>
+        <div class="acts"><button class="btn btn-pri" onclick="go(0)">← Volver al inicio</button></div>
+      </div>
+    `;
+  }
+
+  const level = levelFor(total);
+  const circumference = 2 * Math.PI * 70;
+  const dash = (total/100) * circumference;
+
+  const pillarCards = PILLARS.map(p => {
+    const s = pillarScore(p.key);
+    const pct = s === null ? 0 : s;
+    return `
+      <div class="pillar-card">
+        <div class="pc-top">
+          <span class="pc-name">${p.icon} ${escapeHtml(p.name)}</span>
+          <span class="pc-pct" style="color:${p.color}">${s===null?'—':s+'%'}</span>
+        </div>
+        <div class="pc-bar"><div style="width:${Math.max(2,pct)}%;background:${p.color}"></div></div>
+      </div>
+    `;
+  }).join('');
+
+  // Tabla resumen: las 10 áreas (1-10) y los 3 resultados (11a-11c), tal como se respondieron.
+  const answerRows = [
+    ...CATEGORIES.map((c, i) => ({ n: String(i+1), area: prettyCat(c.cat), q: c.q, id: c.id })),
+    ...OUTCOMES.map((o, i) => ({ n: '11' + 'abc'[i], area: o.lbl, q: o.q, id: o.id })),
+  ].map(r => ({ ...r, val: state.answers[r.id] }));
+
+  const answersTable = answerRows.map(r => {
+    const s = r.val !== undefined ? SCALE.find(x => x.v === r.val) : null;
+    return `
+      <div class="ans-row">
+        <div class="ans-n">${r.n}</div>
+        <div class="ans-area">${escapeHtml(r.area)}</div>
+        <div class="ans-q">${escapeHtml(r.q)}</div>
+        <div class="ans-a"><span class="ans-dot" style="background:${s ? s.color : 'var(--border-2)'}"></span>${s ? escapeHtml(s.lbl) : '—'}</div>
+      </div>
+    `;
+  }).join('');
+
+  const outcomesHtml = OUTCOMES.map(o => {
+    const v = state.answers[o.id];
+    const s = v!==undefined ? SCALE.find(x=>x.v===v) : null;
+    return `
+      <div class="outcome-cell">
+        <div class="oicon">${o.icon}</div>
+        <div class="olbl">${escapeHtml(o.lbl)}</div>
+        <div class="oval" style="background:${s?s.color:'var(--border)'};color:#fff">${s?escapeHtml(s.lbl):'—'}</div>
+      </div>
+    `;
+  }).join('');
+
+  // Top-3 categorías prioritarias (más bajas primero)
+  const scored = CATEGORIES.filter(c => state.answers[c.id] !== undefined)
+    .map(c => ({...c, val: state.answers[c.id]}))
+    .sort((a,b) => a.val - b.val)
+    .slice(0, 3);
+
+  const priorityHtml = scored.map((c, i) => {
+    const s = SCALE.find(x=>x.v===c.val);
+    return `
+      <div class="priority-card">
+        <div class="pnum">0${i+1}.</div>
+        <div class="pbadge">${s?escapeHtml(s.lbl):''}</div>
+        <div class="pname">${escapeHtml(c.cat)}</div>
+        <div class="pdesc">${escapeHtml(c.desc)}</div>
+        <div class="pareas-lbl">Áreas para trabajar</div>
+        <div class="pareas">${c.areas.map(a=>escapeHtml(a)).join(' · ')}</div>
+      </div>
+    `;
+  }).join('');
+
+  // Resumen en texto plano para enviar al asesor (correo o WhatsApp). Se mantiene compacto
+  // para que el enlace mailto: no rebase el límite de longitud de los clientes de correo.
+  const lead = state.lead;
+  const summaryLines = [
+    'Resultados Diagnóstico Rápido BOSS',
+    '',
+    `Nombre: ${lead.nombre || '—'}`,
+    `Email: ${lead.email || '—'}`,
+    `WhatsApp: ${lead.whatsapp || '—'}`,
+    '',
+    `BOSS Score: ${total}/100 · Nivel ${level.n} ${level.name}`,
+    '',
+    'Pilares:',
+    ...PILLARS.map(p => { const s = pillarScore(p.key); return `- ${p.name}: ${s === null ? '—' : s + '%'}`; }),
+    '',
+    'Respuestas:',
+    ...answerRows.map(r => {
+      const s = r.val !== undefined ? SCALE.find(x => x.v === r.val) : null;
+      return `${r.n}. ${r.area}: ${s ? s.lbl : '—'}`;
+    }),
+    '',
+    'Áreas prioritarias:',
+    ...scored.map((c, i) => `${i+1}. ${prettyCat(c.cat)}`),
+  ];
+  const summaryText = summaryLines.join('\n');
+  const mailtoHref = `mailto:${ADVISOR_EMAIL}?subject=${encodeURIComponent('Resultados diagnóstico BOSS — ' + (lead.nombre || 'sin nombre'))}&body=${encodeURIComponent(summaryText)}`;
+  const whatsappHref = `https://wa.me/${ADVISOR_WHATSAPP}?text=${encodeURIComponent(summaryText)}`;
+
+  return `
+    <div class="step active">
+      <div class="step-head">
+        <h1 class="step-title"><span class="icon">📊</span> Tu Diagnóstico Rápido BOSS</h1>
+        <p class="step-sub">${answered} / ${totalQs} preguntas respondidas.</p>
+      </div>
+
+      <div class="score-wrap">
+        <div class="score-eyebrow">Tu BOSS Score</div>
+        <div class="score-circle-box">
+          <svg width="160" height="160" viewBox="0 0 160 160">
+            <circle cx="80" cy="80" r="70" fill="none" stroke="rgba(255,255,255,.15)" stroke-width="12"/>
+            <circle cx="80" cy="80" r="70" fill="none" stroke="var(--oro-b)" stroke-width="12"
+              stroke-linecap="round" stroke-dasharray="${dash} ${circumference}"
+              transform="rotate(-90 80 80)"/>
+          </svg>
+          <div class="score-num">
+            <div class="big">${total}</div>
+            <div class="of">de 100</div>
+          </div>
+        </div>
+        <div class="level-badge">
+          <span class="licon">${level.icon}</span>
+          <span class="ltxt">Nivel ${level.n}</span>
+          <span class="lname">· ${escapeHtml(level.name)}</span>
+        </div>
+        <div class="score-desc">${escapeHtml(level.desc)}</div>
+      </div>
+
+      <div class="dash-card">
+        <h3>Resumen de tus respuestas</h3>
+        <div class="ans-table">
+          <div class="ans-head"><div>#</div><div>Área</div><div>Pregunta</div><div>Respuesta</div></div>
+          ${answersTable}
+        </div>
+      </div>
+
+      <div class="dash-card">
+        <h3>Cómo puntúan tus pilares</h3>
+        <p class="hint" style="text-align:left;margin:-.4rem 0 .9rem">Puntaje por pilar en porcentaje: Desempeño del Dueño, VISION, VELOCIDAD y VALOR.</p>
+        <div class="pillar-grid">${pillarCards}</div>
+      </div>
+
+      <div class="dash-card">
+        <h3>Resultados que estás obteniendo hoy</h3>
+        <div class="outcomes-grid">${outcomesHtml}</div>
+      </div>
+
+      <div class="div-sec">Tus 3 áreas prioritarias</div>
+      ${priorityHtml || '<p class="hint">Responde las 10 preguntas de área para ver tus prioridades.</p>'}
+
+      <div class="share-card">
+        <h3>Comparte tus resultados con tu asesor</h3>
+        <p class="share-who">
+          Enviamos este resumen a nombre de <strong>${escapeHtml(lead.nombre || 'ti')}</strong>
+          (${escapeHtml(lead.email || 'sin correo')} · WhatsApp ${escapeHtml(lead.whatsapp || 'sin número')}).
+          ¿Datos incorrectos? <a href="#" onclick="go(0);return false">Vuelve al inicio para corregirlos</a>.
+        </p>
+        <div class="share-btns">
+          <a class="share-btn" href="${mailtoHref}">✉️ Enviar por correo</a>
+          <a class="share-btn wa" href="${whatsappHref}" target="_blank" rel="noopener">💬 Enviar por WhatsApp</a>
+        </div>
+      </div>
+
+      <div class="insight-box">
+        <div class="label">¿No sabes por dónde empezar?</div>
+        <div class="line">Agenda una llamada gratuita de 30 minutos. Revisamos tu resultado juntos y elegimos tu primera prioridad.</div>
+        <a class="cta-btn" href="${CALENDLY}" target="_blank" rel="noopener">Agenda tu llamada gratis →</a>
+        <div class="cta-sub">Dueños Libres · Método PROFIT-LIBRE</div>
+      </div>
+
+      <div class="acts">
+        <button class="btn btn-sec" onclick="go(${curStep-1})">← Volver</button>
+        <button class="print-btn" onclick="window.print()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+          Imprimir / PDF
+        </button>
+      </div>
+
+      <div class="div-sec" style="margin-top:2rem">¿Vas a compartir este diagnóstico con otra persona?</div>
+      <div style="text-align:center">
+        <button class="reset-btn" onclick="borrarTodo()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+          Borrar mis respuestas
+        </button>
+      </div>
+    </div>
+  `;
+}
+
+function borrarTodo(){
+  if (!confirm('¿Seguro que quieres borrar tus respuestas?')) return;
+  try { localStorage.removeItem(STORAGE_KEY); } catch(e) {}
+  state = { answers: {}, lead: EMPTY_LEAD() };
+  lastSubmittedLead = null;
+  curStep = 0;
+  render();
+  window.scrollTo({ top:0, behavior:'smooth' });
+}
+
+loadState();
+render();
+</script>
+</body>
+</html>
