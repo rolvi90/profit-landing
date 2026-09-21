@@ -298,12 +298,14 @@ const CALENDLY = 'https://calendly.com/rolando-villarreal/30min';
 const ADVISOR_EMAIL = 'coaching@rolvi.page';
 const ADVISOR_WHATSAPP = '528661234006';
 
-// Google Form ligado a un Sheet: guarda nombre/email/whatsapp de cada interesado apenas
-// pulsa "Comenzar" (aunque no termine). Se envía por un iframe oculto para que la
-// persona nunca salga de esta página.
+// Google Form ligado a un Sheet. Cada interesado genera hasta 2 filas: una al pulsar
+// "Comenzar" (nombre/email/whatsapp, aunque no termine) y otra al ver su resultado
+// (mismos datos + "Resumen BOSS" con puntaje y respuestas). Se envía por un iframe
+// oculto para que la persona nunca salga de esta página.
 const GFORM_ACTION = 'https://docs.google.com/forms/d/e/1FAIpQLSfpi8xUgDkruOKLUhaE3ESpD_MGktfYOw9R_ykb3A26zKMjZA/formResponse';
-const GFORM_ENTRIES = { nombre: 'entry.1929709800', email: 'entry.1533618188', whatsapp: 'entry.945493825' };
+const GFORM_ENTRIES = { nombre: 'entry.1929709800', email: 'entry.1533618188', whatsapp: 'entry.945493825', resumen: 'entry.1540949303' };
 let lastSubmittedLead = null;
+let lastSubmittedResults = null;
 
 const EMPTY_LEAD = () => ({ nombre: '', email: '', whatsapp: '' });
 let state = { answers: {}, lead: EMPTY_LEAD() };
@@ -331,26 +333,38 @@ function updateComenzarBtn(){
   if (btn) btn.disabled = !leadComplete();
 }
 
-function submitToGoogleForm(){
-  if (!leadComplete()) return;
-  const snapshot = JSON.stringify(state.lead);
-  if (snapshot === lastSubmittedLead) return;
-  lastSubmittedLead = snapshot;
+function postToGoogleForm(fields){
   const form = document.createElement('form');
   form.action = GFORM_ACTION;
   form.method = 'POST';
   form.target = 'hidden_gform_iframe';
   form.style.display = 'none';
-  Object.keys(GFORM_ENTRIES).forEach(key => {
+  Object.keys(fields).forEach(key => {
     const input = document.createElement('input');
     input.type = 'hidden';
     input.name = GFORM_ENTRIES[key];
-    input.value = state.lead[key] || '';
+    input.value = fields[key] || '';
     form.appendChild(input);
   });
   document.body.appendChild(form);
   form.submit();
   setTimeout(() => form.remove(), 1000);
+}
+
+// Al pulsar "Comenzar": solo los datos de contacto.
+function submitToGoogleForm(){
+  if (!leadComplete()) return;
+  const snapshot = JSON.stringify(state.lead);
+  if (snapshot === lastSubmittedLead) return;
+  lastSubmittedLead = snapshot;
+  postToGoogleForm(state.lead);
+}
+
+// Al ver el resultado: datos de contacto + resumen. Solo se reenvía si el resumen cambió.
+function submitResultsToGoogleForm(summaryText){
+  if (!leadComplete() || summaryText === lastSubmittedResults) return;
+  lastSubmittedResults = summaryText;
+  postToGoogleForm({ ...state.lead, resumen: summaryText });
 }
 
 const STEPS = [{type:'intro'}];
@@ -432,7 +446,7 @@ function renderIntro(){
           <label for="lead-whatsapp">WhatsApp (con lada)</label>
           <input id="lead-whatsapp" type="tel" class="lead-in" autocomplete="tel" placeholder="52 1 55 1234 5678" value="${escapeHtml(state.lead.whatsapp)}" oninput="setLead('whatsapp', this.value)">
         </div>
-        <p class="hint" style="text-align:left">Usamos estos datos solo para que tu asesor le dé seguimiento a tu diagnóstico. No hacemos spam.</p>
+        <p class="hint" style="text-align:left">Tu asesor recibirá tus datos y tus resultados para darte seguimiento. Los usamos solo para eso. No hacemos spam.</p>
       </div>
       <div class="acts">
         <button class="btn btn-pri" id="btn-comenzar" ${leadComplete() ? '' : 'disabled'} onclick="submitToGoogleForm(); go(1)">Comenzar →</button>
@@ -631,6 +645,7 @@ function renderDashboard(){
     ...scored.map((c, i) => `${i+1}. ${prettyCat(c.cat)}`),
   ];
   const summaryText = summaryLines.join('\n');
+  submitResultsToGoogleForm(summaryText);
   const mailtoHref = `mailto:${ADVISOR_EMAIL}?subject=${encodeURIComponent('Resultados diagnóstico BOSS — ' + (lead.nombre || 'sin nombre'))}&body=${encodeURIComponent(summaryText)}`;
   const whatsappHref = `https://wa.me/${ADVISOR_WHATSAPP}?text=${encodeURIComponent(summaryText)}`;
 
@@ -686,15 +701,16 @@ function renderDashboard(){
       ${priorityHtml || '<p class="hint">Responde las 10 preguntas de área para ver tus prioridades.</p>'}
 
       <div class="share-card">
-        <h3>Comparte tus resultados con tu asesor</h3>
+        <h3>Platica tus resultados con tu asesor</h3>
         <p class="share-who">
-          Enviamos este resumen a nombre de <strong>${escapeHtml(lead.nombre || 'ti')}</strong>
-          (${escapeHtml(lead.email || 'sin correo')} · WhatsApp ${escapeHtml(lead.whatsapp || 'sin número')}).
-          ¿Datos incorrectos? <a href="#" onclick="go(0);return false">Vuelve al inicio para corregirlos</a>.
+          Tu asesor recibe este resumen a nombre de <strong>${escapeHtml(lead.nombre || 'ti')}</strong>
+          (${escapeHtml(lead.email || 'sin correo')} · WhatsApp ${escapeHtml(lead.whatsapp || 'sin número')})
+          para darte seguimiento. ¿Datos incorrectos? <a href="#" onclick="go(0);return false">Vuelve al inicio para corregirlos</a>.
+          Si prefieres escribirle tú directamente:
         </p>
         <div class="share-btns">
-          <a class="share-btn" href="${mailtoHref}">✉️ Enviar por correo</a>
-          <a class="share-btn wa" href="${whatsappHref}" target="_blank" rel="noopener">💬 Enviar por WhatsApp</a>
+          <a class="share-btn" href="${mailtoHref}">✉️ Escribir por correo</a>
+          <a class="share-btn wa" href="${whatsappHref}" target="_blank" rel="noopener">💬 Escribir por WhatsApp</a>
         </div>
       </div>
 
@@ -729,6 +745,7 @@ function borrarTodo(){
   try { localStorage.removeItem(STORAGE_KEY); } catch(e) {}
   state = { answers: {}, lead: EMPTY_LEAD() };
   lastSubmittedLead = null;
+  lastSubmittedResults = null;
   curStep = 0;
   render();
   window.scrollTo({ top:0, behavior:'smooth' });
