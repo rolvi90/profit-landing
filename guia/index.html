@@ -1,0 +1,422 @@
+<!doctype html>
+<html lang="es-MX">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Que tu empresa siga sin ti · Guía gratuita | Rolando Villarreal</title>
+<meta name="description" content="Cinco herramientas para imprimir y llenar con tu familia: autodiagnóstico de dependencia, protocolo familiar, matriz del sucesor, encuesta y plan de transición. Gratis.">
+<meta name="theme-color" content="#041c3b">
+<link rel="canonical" href="https://rolvi.page/guia/">
+
+<!-- Vista previa al compartir el enlace (LinkedIn, WhatsApp, etc.). Si publicas la página en otra ruta, cambia las URL de abajo. -->
+<meta property="og:type" content="website">
+<meta property="og:locale" content="es_MX">
+<meta property="og:site_name" content="Rolando Villarreal">
+<meta property="og:title" content="Que tu empresa siga sin ti · Guía gratuita">
+<meta property="og:description" content="Cinco herramientas para imprimir, llenar con los tuyos y ponerle fecha a lo que hoy se decide por costumbre.">
+<meta property="og:url" content="https://rolvi.page/guia/">
+<meta property="og:image" content="https://rolvi.page/guia/img/og-guia.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Portada de la guía Que tu empresa siga sin ti, de la serie El Negocio después del Negocio">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="preload" href="fonts/cormorant-garamond-latin-500-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/source-sans-3-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+
+<style>
+/* Tipografías propias (licencia OFL), sin llamadas a Google Fonts */
+@font-face{font-family:"Cormorant Garamond";font-style:normal;font-weight:500;font-display:swap;src:url("fonts/cormorant-garamond-latin-500-normal.woff2") format("woff2")}
+@font-face{font-family:"Cormorant Garamond";font-style:italic;font-weight:500;font-display:swap;src:url("fonts/cormorant-garamond-latin-500-italic.woff2") format("woff2")}
+@font-face{font-family:"Cormorant Garamond";font-style:normal;font-weight:600;font-display:swap;src:url("fonts/cormorant-garamond-latin-600-normal.woff2") format("woff2")}
+@font-face{font-family:"Source Sans 3";font-style:normal;font-weight:400;font-display:swap;src:url("fonts/source-sans-3-latin-400-normal.woff2") format("woff2")}
+@font-face{font-family:"Source Sans 3";font-style:normal;font-weight:600;font-display:swap;src:url("fonts/source-sans-3-latin-600-normal.woff2") format("woff2")}
+
+:root{
+  --navy:#041c3b; --navy-light:#0c2d5a; --deep:#000d21;
+  --gold:#c9a84c; --gold-light:#e8d48b; --gold-dark:#9a7e3c; --gold-text:#7a6226;
+  --cream:#f5f2ed; --warm:#faf9f7; --ink:#1a1a2e; --muted:#5d6b7b; --line:#ddd6c8;
+  --err:#a8342a;
+  --serif:"Cormorant Garamond",Georgia,"Times New Roman",serif;
+  --sans:"Source Sans 3",system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+body{margin:0;font-family:var(--sans);font-size:1.0625rem;line-height:1.6;color:var(--ink);background:var(--warm)}
+img{max-width:100%;height:auto;display:block}
+a{color:var(--navy-light)}
+[hidden]{display:none!important}
+.wrap{max-width:1120px;margin:0 auto;padding:0 20px}
+:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+.skip{position:absolute;left:-999px;top:8px;background:var(--gold-light);color:var(--navy);padding:10px 14px;z-index:10;font-weight:600}
+.skip:focus{left:8px}
+
+/* Encabezado */
+.top{background:var(--navy);border-bottom:1px solid rgba(201,168,76,.35)}
+.top .wrap{display:flex;align-items:baseline;justify-content:space-between;gap:16px;padding-top:14px;padding-bottom:14px}
+.brand{font-family:var(--serif);font-weight:600;font-size:1.3rem;color:#fff;text-decoration:none;letter-spacing:.01em}
+.brand span{font-family:var(--sans);font-weight:400;font-size:.8rem;letter-spacing:.14em;text-transform:uppercase;color:var(--gold-light);margin-left:.8em}
+.top a.site{font-size:.9rem;color:var(--gold-light);text-decoration:none}
+@media (max-width:559px){.brand span{display:none}}
+.top a.site:hover{text-decoration:underline}
+
+/* Hero */
+.hero{background:linear-gradient(160deg,var(--navy) 0%,var(--navy-light) 100%);color:#fff;padding:36px 0 56px}
+.hero-grid{display:grid;gap:34px}
+.eyebrow{margin:0 0 14px;font-size:.8rem;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--gold-light)}
+h1{font-family:var(--serif);font-weight:500;font-size:clamp(2.6rem,9vw,4.5rem);line-height:1.02;margin:0 0 18px;letter-spacing:-.01em}
+h1 em{font-style:italic;color:var(--gold-light)}
+.lead{font-size:1.18rem;line-height:1.55;color:#dbe3ee;margin:0 0 12px;max-width:34em}
+.lead-2{font-size:1rem;color:#b9c6d6;margin:0;max-width:34em}
+
+.card{background:var(--cream);color:var(--ink);border-top:3px solid var(--gold);padding:24px 22px 22px;box-shadow:0 22px 48px rgba(0,0,0,.35);max-width:520px;margin:0 auto}
+.card h2{font-family:var(--serif);font-weight:600;font-size:1.75rem;line-height:1.15;margin:0 0 4px;color:var(--navy)}
+.card .sub{margin:0 0 16px;color:var(--muted);font-size:.98rem}
+.field{margin:0 0 14px}
+.field label{display:block;font-weight:600;font-size:.92rem;margin:0 0 5px;color:var(--navy)}
+.field .opt{font-weight:400;color:var(--muted)}
+.field input[type=text],.field input[type=email]{width:100%;min-height:48px;padding:10px 14px;font:inherit;font-size:1rem;color:var(--ink);background:#fff;border:1px solid #c3bcad;border-radius:0}
+.field input:focus{outline:2px solid var(--gold-dark);outline-offset:0;border-color:var(--gold-dark)}
+.field input[aria-invalid=true]{border-color:var(--err);box-shadow:inset 3px 0 0 var(--err)}
+.err{margin:5px 0 0;color:var(--err);font-size:.9rem}
+.hp{position:absolute!important;left:-9999px;width:1px;height:1px;overflow:hidden}
+.check{display:flex;gap:10px;align-items:flex-start;margin:6px 0 18px;font-size:.95rem;line-height:1.45;cursor:pointer}
+.check input{flex:none;width:22px;height:22px;margin:1px 0 0;accent-color:var(--navy)}
+.check small{color:var(--muted)}
+.btn{display:inline-flex;align-items:center;justify-content:center;width:100%;min-height:54px;padding:12px 22px;background:var(--navy);color:var(--gold-light);border:1px solid var(--navy);border-radius:0;font:600 .88rem/1.2 var(--sans);letter-spacing:.14em;text-transform:uppercase;text-decoration:none;cursor:pointer;transition:background .15s,color .15s,border-color .15s}
+.btn:hover{background:var(--gold);border-color:var(--gold);color:var(--navy)}
+.btn[disabled]{opacity:.65;cursor:progress}
+.btn.ghost{background:transparent;border-color:var(--gold);color:var(--gold-light);width:auto}
+.btn.ghost:hover{background:var(--gold);color:var(--navy)}
+.btn.outline{background:transparent;color:var(--navy);width:auto}
+.btn.outline:hover{background:var(--navy);color:var(--gold-light);border-color:var(--navy)}
+.fine{margin:14px 0 0;font-size:.85rem;line-height:1.5;color:var(--muted)}
+.status{margin:12px 0 0;font-size:.95rem;color:var(--err);min-height:1px}
+.status:empty{display:none}
+.success .kicker{margin:0 0 6px;font-size:.78rem;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--gold-text)}
+.success h2{margin-bottom:10px}
+.success p{margin:0 0 14px}
+.success hr{border:0;border-top:1px solid var(--line);margin:20px 0 16px}
+.success .demo{background:#fff3cd;border-left:4px solid #d4a017;padding:8px 12px;font-size:.88rem;color:#5a4400}
+.cover{width:100%;max-width:250px;margin:0 auto;box-shadow:0 30px 60px rgba(0,0,0,.5);border:1px solid rgba(255,255,255,.1)}
+
+/* Secciones */
+section{padding:56px 0}
+h2.sec{font-family:var(--serif);font-weight:600;font-size:clamp(1.9rem,5vw,2.6rem);line-height:1.1;color:var(--navy);margin:0 0 10px}
+.sec-intro{margin:0 0 30px;color:var(--muted);max-width:40em}
+.inside{background:var(--warm)}
+.tools{list-style:none;margin:0;padding:0;max-width:860px}
+.tools li{display:grid;grid-template-columns:44px 1fr;gap:6px 14px;padding:18px 0;border-top:1px solid var(--line)}
+.tools li:last-child{border-bottom:1px solid var(--line)}
+.tools .n{font-family:var(--serif);font-weight:600;font-size:2.1rem;line-height:1;color:var(--gold-dark)}
+.tools h3{margin:0 0 4px;font-size:1.12rem;color:var(--navy)}
+.tools p{margin:0 0 6px}
+.tools .who{display:inline-block;font-size:.76rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--gold-text)}
+.how{background:var(--cream)}
+.steps{display:grid;gap:22px;margin:0;padding:0;list-style:none}
+.steps li{border-left:3px solid var(--gold);padding-left:16px}
+.steps h3{font-family:var(--serif);font-weight:600;font-size:1.5rem;margin:0 0 4px;color:var(--navy)}
+.steps p{margin:0}
+.peek{background:var(--warm)}
+.shots{display:grid;grid-auto-flow:column;grid-auto-columns:78%;gap:16px;overflow-x:auto;scroll-snap-type:x mandatory;padding:4px 2px 18px;margin:0 -20px;padding-left:20px;padding-right:20px}
+.shots figure{margin:0;scroll-snap-align:start}
+.shots img{border:1px solid var(--line);box-shadow:0 14px 30px rgba(4,28,59,.14);background:#fff}
+.shots figcaption{margin-top:10px;font-size:.92rem;color:var(--muted)}
+.talk{background:var(--cream)}
+.talk p{max-width:40em}
+.talk .row{display:flex;flex-wrap:wrap;gap:14px 22px;align-items:center;margin-top:20px}
+.faq{background:var(--warm)}
+details{border-top:1px solid var(--line);max-width:760px}
+details:last-of-type{border-bottom:1px solid var(--line)}
+summary{cursor:pointer;list-style:none;padding:16px 36px 16px 0;font-weight:600;color:var(--navy);position:relative}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+";position:absolute;right:6px;top:50%;transform:translateY(-52%);font-size:1.5rem;font-weight:400;color:var(--gold-dark)}
+details[open] summary::after{content:"\2212"}
+details p{margin:0 0 16px;max-width:40em}
+.final{background:var(--navy);color:#fff;text-align:center;padding:64px 0}
+.final p.q{font-family:var(--serif);font-weight:500;font-style:italic;font-size:clamp(1.6rem,4.5vw,2.4rem);line-height:1.2;max-width:22em;margin:0 auto 26px;color:var(--gold-light)}
+.final .btn{width:auto;min-width:260px}
+footer{background:var(--deep);color:#9fb0c3;padding:28px 0;font-size:.88rem}
+footer .wrap{display:flex;flex-wrap:wrap;gap:10px 24px;justify-content:space-between}
+footer a{color:#c8d4e2}
+noscript .ns{background:#fff3cd;color:#5a4400;padding:12px 16px;margin:0 0 14px;border-left:4px solid #d4a017;font-size:.95rem}
+
+@media (min-width:700px){
+  .shots{grid-auto-flow:row;grid-template-columns:repeat(3,1fr);grid-auto-columns:auto;overflow:visible;margin:0;padding:4px 0 0}
+  .steps{grid-template-columns:repeat(3,1fr);gap:28px}
+  .tools li{grid-template-columns:56px 1fr;padding:22px 0}
+}
+@media (min-width:960px){
+  .hero{padding:52px 0 72px}
+  .hero-grid{grid-template-columns:minmax(0,1.08fr) minmax(0,.92fr);grid-template-areas:"text form" "cover form";column-gap:64px;row-gap:30px;align-items:start}
+  .hero-text{grid-area:text}
+  .hero-form{grid-area:form;position:sticky;top:20px}
+  .hero-form .card{margin:0 0 0 auto}
+  .hero-cover{grid-area:cover}
+  .cover{max-width:270px;margin:0 0 0 14px;transform:rotate(-2deg)}
+  section{padding:76px 0}
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#descarga">Ir al formulario de descarga</a>
+
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="https://rolvi.page">Rolando Villarreal<span>Asesor empresarial</span></a>
+    <a class="site" href="https://rolvi.page">rolvi.page</a>
+  </div>
+</header>
+
+<main id="main">
+  <section class="hero" aria-labelledby="titulo">
+    <div class="wrap hero-grid">
+      <div class="hero-text">
+        <p class="eyebrow">Guía gratuita · 10 páginas · para imprimir</p>
+        <h1 id="titulo">Que tu empresa<br><em>siga sin ti</em></h1>
+        <p class="lead">Cinco herramientas para ordenar lo que hoy se decide por costumbre: cuánto depende tu empresa de ti, qué reglas tiene tu familia, quién podría sucederte y cómo ponerle fecha a todo eso.</p>
+        <p class="lead-2">De mi serie <em>El Negocio después del Negocio</em>, en un solo documento para imprimir y llenar a mano.</p>
+      </div>
+
+      <div class="hero-form">
+        <form id="lead-form" class="card" action="#" method="post" novalidate>
+          <noscript><p class="ns">Para descargar la guía desde aquí necesitas activar JavaScript. Si prefieres, escríbeme a rolando@rolandocoach.com y te la envío.</p></noscript>
+          <h2 id="descarga">Descarga la guía gratis</h2>
+          <p class="sub">Déjame tu nombre y tu correo. La descarga es inmediata.</p>
+
+          <div class="field">
+            <label for="nombre">Nombre</label>
+            <input id="nombre" name="nombre" type="text" autocomplete="name" required aria-describedby="nombre-err">
+            <p class="err" id="nombre-err" hidden></p>
+          </div>
+          <div class="field">
+            <label for="correo">Correo electrónico</label>
+            <input id="correo" name="correo" type="email" autocomplete="email" inputmode="email" autocapitalize="none" spellcheck="false" required aria-describedby="correo-err">
+            <p class="err" id="correo-err" hidden></p>
+          </div>
+          <div class="field">
+            <label for="empresa">Empresa <span class="opt">(opcional)</span></label>
+            <input id="empresa" name="empresa" type="text" autocomplete="organization">
+          </div>
+          <div class="field hp" aria-hidden="true">
+            <label for="website">Déjalo en blanco</label>
+            <input id="website" name="website" type="text" tabindex="-1" autocomplete="off">
+          </div>
+          <label class="check" for="boletin">
+            <input id="boletin" name="boletin" type="checkbox">
+            <span>Quiero que me avises por correo cuando publique un nuevo episodio de la serie. <small>(Opcional)</small></span>
+          </label>
+
+          <button type="submit" id="btn-submit" class="btn">Descargar la guía</button>
+          <p class="status" id="form-status" role="alert" aria-live="polite"></p>
+          <p class="fine">Uso tus datos para entregarte la guía y llevar un registro de quién la descarga. No los comparto con nadie. Aquí está el <a href="privacidad/">aviso de privacidad</a>.</p>
+        </form>
+
+        <div id="success" class="card success" role="status" tabindex="-1" hidden>
+          <p class="kicker">Listo</p>
+          <h2>Gracias<span id="nombre-out"></span>.</h2>
+          <p>Tu guía está lista. Imprímela y empieza hoy con la herramienta 1: son cinco minutos.</p>
+          <a id="btn-pdf" class="btn" href="Que-tu-empresa-siga-sin-ti.pdf" download>Descargar la guía (PDF)</a>
+          <p class="fine">Si no se descarga, <a id="link-pdf" href="Que-tu-empresa-siga-sin-ti.pdf" target="_blank" rel="noopener">ábrela en otra pestaña</a>.</p>
+          <hr>
+          <p>¿Quieres platicarlo cuando la hayas llenado? <a id="link-cal" href="https://calendly.com/rolando-villarreal/30min" target="_blank" rel="noopener">Agenda 30 minutos</a>, sin costo y sin compromiso.</p>
+          <p class="demo" id="demo-note" hidden>Modo de prueba: no se guardó ningún dato.</p>
+        </div>
+      </div>
+
+      <div class="hero-cover">
+        <img class="cover" src="img/portada.jpg" width="1105" height="1430" alt="Portada de la guía: fondo azul marino con el título Que tu empresa siga sin ti y una franja crema con la frase Imprímela, llénala con los tuyos y ponle fecha.">
+      </div>
+    </div>
+  </section>
+
+  <section class="inside" aria-labelledby="que-incluye">
+    <div class="wrap">
+      <h2 class="sec" id="que-incluye">Qué vas a encontrar adentro</h2>
+      <p class="sec-intro">Van de lo más personal a lo más compartido, y terminan en un plan con fechas. No tienes que llenarlas todas hoy: lo que salga en rojo o en «No» te dice por dónde empezar.</p>
+      <ol class="tools">
+        <li><span class="n">1</span><div><h3>Autodiagnóstico de dependencia</h3><p>Diez preguntas y cinco minutos. Un semáforo te dice qué tan dependiente es tu empresa de ti.</p><span class="who">Tú solo</span></div></li>
+        <li><span class="n">2</span><div><h3>Checklist de tu protocolo familiar</h3><p>Ocho temas que no puedes dejar sin respuesta por escrito: quién puede trabajar aquí, quién puede ser dueño, cómo se reparte el dinero, cómo se resuelven los pleitos.</p><span class="who">Con tu familia</span></div></li>
+        <li><span class="n">3</span><div><h3>Matriz de evaluación del sucesor</h3><p>Diez criterios para evaluar a un candidato contra lo que el puesto exige, no contra sus hermanos.</p><span class="who">Tú y alguien de fuera</span></div></li>
+        <li><span class="n">4</span><div><h3>Encuesta para la familia</h3><p>Diez preguntas que cada miembro de la familia con parte en la empresa contesta por separado. Donde las respuestas no coinciden está lo que hay que platicar.</p><span class="who">Cada quien por separado, y luego juntos</span></div></li>
+        <li><span class="n">5</span><div><h3>Plan de transición a 12-18 meses</h3><p>Cinco etapas, cada una con su primer paso, quién lo lleva y para cuándo.</p><span class="who">Tú, tu familia y quien te acompañe</span></div></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="how" aria-labelledby="como">
+    <div class="wrap">
+      <h2 class="sec" id="como">Cómo sacarle provecho</h2>
+      <ol class="steps">
+        <li><h3>Imprímela</h3><p>Estas herramientas se piensan mejor con la hoja sobre la mesa y un lápiz en la mano que frente a una pantalla.</p></li>
+        <li><h3>Empieza tú solo</h3><p>El autodiagnóstico lo contestas en cinco minutos, sin consultarle a nadie. Lo demás se trabaja en compañía: tu familia y alguien de fuera cuyo juicio respetes.</p></li>
+        <li><h3>Ponle fecha</h3><p>Lo que no tiene fecha se queda en buena intención. El plan de la herramienta 5 sirve para eso.</p></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="peek" aria-labelledby="vistazo">
+    <div class="wrap">
+      <h2 class="sec" id="vistazo">Un vistazo por dentro</h2>
+      <p class="sec-intro">Así se ven tres de las cinco herramientas. Hojas limpias, para escribir encima.</p>
+      <div class="shots" role="list">
+        <figure role="listitem"><img loading="lazy" src="img/interior-autodiagnostico.jpg" width="850" height="1100" alt="Página del autodiagnóstico de dependencia: tabla de diez preguntas con casillas Sí, más o menos y No, y un semáforo verde, amarillo y rojo."><figcaption>Autodiagnóstico: diez preguntas y un semáforo</figcaption></figure>
+        <figure role="listitem"><img loading="lazy" src="img/interior-checklist.jpg" width="850" height="1100" alt="Página del checklist del protocolo familiar: ocho temas con sus preguntas y casillas para marcar si ya están por escrito."><figcaption>Checklist de tu protocolo familiar</figcaption></figure>
+        <figure role="listitem"><img loading="lazy" src="img/interior-plan.jpg" width="850" height="1100" alt="Página del plan de transición a 12-18 meses: cinco etapas y una tabla en blanco para escribir el primer paso, quién lo lleva y para cuándo."><figcaption>Plan de transición a 12-18 meses</figcaption></figure>
+      </div>
+    </div>
+  </section>
+
+  <section class="talk" aria-labelledby="platicarlo">
+    <div class="wrap">
+      <h2 class="sec" id="platicarlo">Y si después de llenarla quieres platicarlo</h2>
+      <p>Este trabajo se puede hacer solo, con disciplina. A veces conviene un árbitro que no sea de la familia. Si quieres platicar con qué etapa empezar o qué tan urgente es tu caso, agenda una llamada de 30 minutos, sin costo y sin compromiso. No prometo una fórmula instantánea. Prometo una conversación franca sobre en qué etapa está tu empresa y qué sigue.</p>
+      <div class="row">
+        <a class="btn outline" href="https://calendly.com/rolando-villarreal/30min" target="_blank" rel="noopener">Agendar 30 minutos</a>
+        <a href="https://www.linkedin.com/in/rolandomvillarreal" target="_blank" rel="noopener">o escríbeme por LinkedIn</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="faq" aria-labelledby="preguntas">
+    <div class="wrap">
+      <h2 class="sec" id="preguntas">Preguntas frecuentes</h2>
+      <details><summary>¿Cuánto cuesta?</summary><p>Nada. Es gratuita.</p></details>
+      <details><summary>¿Tengo que llenarla toda hoy?</summary><p>No. Empieza por el autodiagnóstico, que toma cinco minutos. Lo que salga en rojo o en «No» te dice por dónde seguir.</p></details>
+      <details><summary>¿Sirve si mi empresa no es familiar?</summary><p>Está escrita pensando en empresas familiares. Aun así, el autodiagnóstico y el plan de transición le sirven a cualquier dueño que quiera saber cuánto depende su empresa de él.</p></details>
+      <details><summary>¿Qué hacen con mi correo?</summary><p>Lo uso para entregarte la guía y llevar un registro de quién la descarga. Si marcas la casilla, también para avisarte cuando publique un nuevo episodio. No lo comparto con nadie. Los detalles están en el <a href="privacidad/">aviso de privacidad</a>.</p></details>
+      <details><summary>¿Reemplaza a un abogado o a un notario?</summary><p>No. Es una herramienta de trabajo y de orientación general. Los acuerdos de la familia se formalizan con la asesoría legal, fiscal y notarial que cada caso necesite.</p></details>
+    </div>
+  </section>
+
+  <section class="final" aria-label="Invitación final">
+    <div class="wrap">
+      <p class="q">¿Y tú, estás gobernando tu empresa, o solo la estás controlando mientras puedas?</p>
+      <a class="btn ghost" href="#descarga" id="cta-final">Descargar la guía</a>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>© 2026 Rolando Villarreal · Asesor empresarial</span>
+    <span><a href="https://rolvi.page">rolvi.page</a> · <a href="privacidad/">Aviso de privacidad</a> · <a href="mailto:rolando@rolandocoach.com">rolando@rolandocoach.com</a></span>
+  </div>
+</footer>
+
+<script>
+(function () {
+  "use strict";
+
+  /* ================= CONFIGURACIÓN (lo único que tienes que tocar) =================
+     formLink: enlace "prellenado" de tu Google Form. Los pasos están en LEEME.txt.
+     Debe verse así (una sola línea):
+     https://docs.google.com/forms/d/e/XXXX/viewform?usp=pp_url&entry.111=NOMBRE&entry.222=CORREO&entry.333=EMPRESA&entry.444=BOLETIN&entry.555=ORIGEN
+     Con formLink vacío, la página muestra el aviso de "no conectada" y no entrega la descarga.
+     Para ver cómo queda sin conectar nada, abre la página con ?demo=1 al final de la dirección. */
+  var CONFIG = {
+    formLink: "https://docs.google.com/forms/d/e/1FAIpQLSeyvdENmAZLYJLp5EVklh0pNDyM9oU1nJgBNUfT9dNu-LJdsA/viewform?usp=pp_url&entry.1247835307=NOMBRE&entry.274999181=CORREO&entry.110976110=EMPRESA&entry.846428296=BOLETIN&entry.1714290189=ORIGEN",
+    pdf: "Que-tu-empresa-siga-sin-ti.pdf",
+    correo: "rolando@rolandocoach.com",
+    timeoutMs: 10000
+  };
+  /* ================================================================================= */
+
+  var $ = function (id) { return document.getElementById(id); };
+  var form = $("lead-form"), card = $("success"), statusEl = $("form-status"), btn = $("btn-submit");
+  var params = new URLSearchParams(window.location.search);
+  var demo = params.get("demo");
+  var origen = (params.get("src") || params.get("utm_source") || "directo").slice(0, 40);
+
+  $("btn-pdf").href = CONFIG.pdf;
+  $("link-pdf").href = CONFIG.pdf;
+
+  function parseFormLink(link) {
+    try {
+      var u = new URL(link);
+      if (u.hostname !== "docs.google.com" || !/\/forms\//.test(u.pathname)) return null;
+      var map = {};
+      u.searchParams.forEach(function (v, k) { if (/^entry\.\d+$/.test(k)) map[v.trim().toUpperCase()] = k; });
+      if (!map.NOMBRE || !map.CORREO) return null;
+      return { action: u.origin + u.pathname.replace(/\/viewform\/?$/, "/formResponse"), map: map };
+    } catch (e) { return null; }
+  }
+
+  function setBusy(on) {
+    btn.disabled = on;
+    btn.textContent = on ? "Enviando…" : "Descargar la guía";
+  }
+  function setStatus(msg) { statusEl.textContent = msg || ""; }
+  function fieldError(input, msg) {
+    var p = $(input.id + "-err");
+    if (!p) return;
+    if (msg) { p.textContent = msg; p.hidden = false; input.setAttribute("aria-invalid", "true"); }
+    else { p.hidden = true; p.textContent = ""; input.removeAttribute("aria-invalid"); }
+  }
+  ["nombre", "correo"].forEach(function (id) {
+    $(id).addEventListener("input", function () { fieldError(this, ""); setStatus(""); });
+  });
+
+  function showSuccess(nombre, isDemo) {
+    var first = (nombre || "").trim().split(/\s+/)[0];
+    $("nombre-out").textContent = first ? ", " + first : "";
+    $("demo-note").hidden = !isDemo;
+    form.hidden = true;
+    card.hidden = false;
+    card.focus({ preventScroll: true });
+    card.scrollIntoView({ block: "center" });
+  }
+
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+    setStatus("");
+
+    var nombre = $("nombre").value.trim();
+    var correo = $("correo").value.trim();
+    var empresa = $("empresa").value.trim();
+    var boletin = $("boletin").checked ? "Sí" : "No";
+
+    var bad = null;
+    if (nombre.length < 2) { fieldError($("nombre"), "Escribe tu nombre."); bad = bad || $("nombre"); } else fieldError($("nombre"), "");
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(correo)) { fieldError($("correo"), "Escribe un correo válido, por ejemplo nombre@empresa.com."); bad = bad || $("correo"); } else fieldError($("correo"), "");
+    if (bad) { bad.focus(); return; }
+
+    // Campo trampa para robots: si viene lleno, se simula el éxito sin guardar nada.
+    if ($("website").value) { showSuccess(nombre, false); return; }
+
+    if (demo === "1") { showSuccess(nombre, true); return; }
+    if (demo === "error") { setStatus("Prueba de error: así se vería si no se pudiera guardar. Escríbeme a " + CONFIG.correo + " y te envío la guía."); return; }
+
+    var cfg = parseFormLink(CONFIG.formLink);
+    if (!cfg) {
+      setStatus("Esta página todavía no está conectada para guardar correos. Escríbeme a " + CONFIG.correo + " y te envío la guía.");
+      if (window.console) console.warn("guia: falta CONFIG.formLink (enlace prellenado del Google Form). Ver LEEME.txt.");
+      return;
+    }
+    if (navigator.onLine === false) { setStatus("Parece que no tienes conexión. Revísala e inténtalo de nuevo."); return; }
+
+    var body = new URLSearchParams();
+    var put = function (token, value) { if (cfg.map[token]) body.append(cfg.map[token], value); };
+    put("NOMBRE", nombre); put("CORREO", correo); put("EMPRESA", empresa); put("BOLETIN", boletin); put("ORIGEN", origen);
+
+    setBusy(true);
+    var ctrl = ("AbortController" in window) ? new AbortController() : null;
+    var timer = setTimeout(function () { if (ctrl) ctrl.abort(); }, CONFIG.timeoutMs);
+    // Google Forms no devuelve una respuesta legible desde otro dominio (no-cors): el éxito se da por hecho si la petición salió bien.
+    fetch(cfg.action, { method: "POST", mode: "no-cors", body: body, signal: ctrl ? ctrl.signal : undefined })
+      .then(function () { clearTimeout(timer); setBusy(false); showSuccess(nombre, false); })
+      .catch(function () {
+        clearTimeout(timer); setBusy(false);
+        setStatus("No pude guardar tus datos. Inténtalo de nuevo o escríbeme a " + CONFIG.correo + " y te envío la guía.");
+      });
+  });
+
+  // El botón final lleva al formulario y deja el cursor listo en el primer campo.
+  $("cta-final").addEventListener("click", function () {
+    setTimeout(function () { if (!form.hidden) $("nombre").focus({ preventScroll: true }); }, 400);
+  });
+})();
+</script>
+</body>
+</html>
